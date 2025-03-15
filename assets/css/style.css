@@ -2689,7 +2689,7 @@ label {
 .blog-standard-content .title {
     font-size: 28px;
     letter-spacing: -0.84px;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
 }
 .blog-standard-content .title a {
     background-image: linear-gradient(var(--tg-white), var(--tg-white)), linear-gradient(var(--tg-white), var(--tg-white));
@@ -2705,7 +2705,7 @@ label {
     color: inherit;
 }
 .blog-standard-content p {
-    margin-bottom: 55px;
+    margin-bottom: 25px;
 }
 .blog-widget {
     background: var(--tg-secondary-color);
@@ -3761,6 +3761,9 @@ label {
 .bg-gradient-4 img {
     width: 100%;
 }
+.modal.modal-gradient{
+    background: linear-gradient(180deg, #7136b8, #100b214d) !important;
+}
 .bg-gradient-5 {
     background: linear-gradient(180deg, #7136b8, #100b214d);
     top: 0;
@@ -4475,6 +4478,11 @@ label {
     min-height: 206px;
     padding: 40px;
 }
+
+.feature-card.two {
+    min-height: auto !important;
+    padding: 30px !important;
+}
 .feature-card:not(:last-child) {
     margin-bottom: 25px;
 }
@@ -4659,13 +4667,13 @@ label {
     font-weight: bold;
 }
 .plan-price {
-    font-size: 24px;
+    font-size: 36px;
     font-weight: bold;
-    color: #28a745;
+    color: var(--tg-primary-color);
 }
 .plan-returns {
     font-size: 16px;
-    color: #555;
+    color: var(--tg-heading-font-color);
 }
 .swiper {
     padding-bottom: 50px;
@@ -4985,6 +4993,10 @@ label {
 .partner-card .partner-card-text {
     margin-bottom: 112px;
     transition: 0.4s;
+}
+
+.partner-card-text.two {
+    margin-bottom: 10px !important;
 }
 .partner-card .eg-btn {
     min-width: 160px;
@@ -6630,6 +6642,11 @@ label {
 .widget-newsletter {
     margin-top: 60px;
     max-width: 330px;
+}
+
+.widget-newsletter.two {
+    max-width: 100% !important;
+    width: 100% !important;
 }
 .widget-newsletter .newsletter-text {
     margin-top: -0.5em;
