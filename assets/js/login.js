@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       const response = await fetch(
-        "http://localhost/warren/assets/php/login.php",
+        "https://warrencoinv.com/assets/php/login.php",
         {
           method: "POST",
           headers: {
@@ -43,9 +43,9 @@ document.addEventListener("DOMContentLoaded", () => {
           willClose: () => {
             // Redirect based on is_subscribed status
             if (result.user.is_subscribed) {
-              window.location.href = "http://localhost/warren/dashboard.php"; // Redirect to dashboard
+              window.location.href = "https://warrencoinv.com/dashboard.php"; // Redirect to dashboard
             } else {
-              window.location.href = "http://localhost/warren/deposit.php"; // Redirect to deposit
+              window.location.href = "https://warrencoinv.com/deposit.php"; // Redirect to deposit
             }
           },
         });

@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
         try {
-            const response = await fetch("http://localhost/warren/assets/php/withdrawal.php", {
+            const response = await fetch("https://warrencoinv.com/assets/php/withdrawal.php", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
