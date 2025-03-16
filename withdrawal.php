@@ -1,3 +1,4 @@
+<?php include 'assets/php/checkAuthDashboardWithdrawal.php'; ?>
 <!DOCTYPE html>
 <html data-capo="">
     
@@ -21,6 +22,9 @@
         
         <!-- Swiper CSS -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
+        <!-- SweetAlert2 -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.17.2/dist/sweetalert2.min.css" integrity="sha256-SCRy3fXoOamBaidKByHs9iJVLYJ65R/v6ycZNN4JhmE=" crossorigin="anonymous">
 
         <!-- Toastify css -->
          <link rel="stylesheet" href="assets/css/toastify.css">
@@ -47,29 +51,29 @@
                                         <div class="menu-wrap">
                                             <nav class="menu-nav">
                                                 <div class="logo">
-                                                    <a href="index.html" class=""><img src="assets/img/logo/logo.png" alt="Logo" /></a>
+                                                    <a href="index.php" class=""><img src="assets/img/logo/logo.png" alt="Logo" /></a>
                                                 </div>
                                                 <div class="navbar-wrap main-menu d-none d-lg-flex">
                                                     <ul class="navigation">
                                                         <!--[-->
                                                         <li class="">
-                                                            <a aria-current="page" href="index.html" class="router-link-active router-link-exact-active"><span></span>Home</a>
+                                                            <a aria-current="page" href="index.php" class="router-link-active router-link-exact-active"><span></span>Home</a>
                                                             <!---->
                                                         </li>
                                                         <li class="">
-                                                            <a aria-current="page" href="dashboard.html" class="router-link-active router-link-exact-active"><span></span>Dashboard</a>
+                                                            <a aria-current="page" href="dashboard.php" class="router-link-active router-link-exact-active"><span></span>Dashboard</a>
                                                             <!---->
                                                         </li>
                                                         <li class="">
-                                                            <a aria-current="page" href="index.html#blockchain" class="router-link-active router-link-exact-active"><span></span>Why Warren & Co</a>
+                                                            <a aria-current="page" href="index.php#blockchain" class="router-link-active router-link-exact-active"><span></span>Why Warren & Co</a>
                                                             <!---->
                                                         </li>
                                                         <li class="">
-                                                            <a aria-current="page" href="withdrawal.html" class="router-link-active router-link-exact-active"><span></span>Withdrawal</a>
+                                                            <a aria-current="page" href="withdrawal.php" class="router-link-active router-link-exact-active"><span></span>Withdrawal</a>
                                                             <!---->
                                                         </li>
                                                         <li class="">
-                                                            <a aria-current="page" href="index.html#feature" class="router-link-active router-link-exact-active"><span></span>Features</a>
+                                                            <a aria-current="page" href="index.php#feature" class="router-link-active router-link-exact-active"><span></span>Features</a>
                                                             <!---->
                                                         </li>
                                                         <li class="">
@@ -81,7 +85,7 @@
                                                 </div>
                                                 <div class="header-action">
                                                     <ul class="list-wrap">
-                                                        <li class="header-login"><a href="login.html" class="btn2">LOGOUT</a></li>
+                                                        <li class="header-login"><a href="assets/php/logout.php" class="btn2">LOGOUT</a></li>
                                                     </ul>
                                                 </div>
                                                 <div class="mobile-nav-toggler"><i class="fas fa-bars"></i></div>
@@ -98,19 +102,19 @@
                             <nav class="menu-box">
                                 <div class="close-btn"><i class="fas fa-times"></i></div>
                                 <div class="nav-logo">
-                                    <a href="index.html" class=""><img src="assets/img/logo/logo.png" alt="Logo" /></a>
+                                    <a href="index.php" class=""><img src="assets/img/logo/logo.png" alt="Logo" /></a>
                                 </div>
                                 <div class="menu-outer">
                                     <ul class="navigation">
                                         <!--[-->
-                                        <li class=""><a aria-current="page" href="index.html" class="router-link-active router-link-exact-active">Home</a></li>
-                                        <li class=""><a aria-current="page" href="dashboard.html" class="router-link-active router-link-exact-active">Dashboard</a></li>
-                                        <li class=""><a aria-current="page" href="index.html#blockchain" class="router-link-active router-link-exact-active">Why Warren & Co</a></li>
-                                        <li class=""><a aria-current="page" href="withdrawal.html" class="router-link-active router-link-exact-active">Withdrawal</a></li>
-                                        <li class=""><a aria-current="page" href="index.html#feature" class="router-link-active router-link-exact-active">Feature</a></li>
+                                        <li class=""><a aria-current="page" href="index.php" class="router-link-active router-link-exact-active">Home</a></li>
+                                        <li class=""><a aria-current="page" href="dashboard.php" class="router-link-active router-link-exact-active">Dashboard</a></li>
+                                        <li class=""><a aria-current="page" href="index.php#blockchain" class="router-link-active router-link-exact-active">Why Warren & Co</a></li>
+                                        <li class=""><a aria-current="page" href="withdrawal.php" class="router-link-active router-link-exact-active">Withdrawal</a></li>
+                                        <li class=""><a aria-current="page" href="index.php#feature" class="router-link-active router-link-exact-active">Feature</a></li>
                                         
                                         <li class=""><a href="#footer" class="">Contact</a></li>
-                                        <li class="header-login"><a href="login.html" class="btn2">LOGOUT</a></li>
+                                        <li class="header-login"><a href="assets/php/logout.php" class="btn2">LOGOUT</a></li>
                                         <!--]-->
                                     </ul>
                                 </div>
@@ -148,7 +152,7 @@
                             <h2 class="title">Withdrawal</h2>
                             <nav aria-label="breadcrumb">
                               <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="dashboard.html" class="">Home</a></li>
+                                <li class="breadcrumb-item"><a href="dashboard.php" class="">Home</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">Withdrawal</li>
                               </ol>
                             </nav>
@@ -162,87 +166,54 @@
                     </div>
                   </section>
 
-                    <section class="container pt-150 pb-40">
-                        <div class="row row-cols-1 row-cols-lg-4 gy-2">
-                            <div class="col">
-                                <div class="feature-card two">
-                                    <div class="feature-card-icon">
-                                      <img src="assets/img/update/icon/feature-icon1-1.svg" alt="Icon"/>
-                                    </div>
-                                    <div class="feature-card-details">
-                                      <h4 class="feature-card-title">Today Earnings</h4>
-                                      <p class="feature-card-text">$180</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="feature-card two">
-                                    <div class="feature-card-icon">
-                                      <img src="assets/img/update/icon/feature-icon1-2.svg" alt="Icon"/>
-                                    </div>
-                                    <div class="feature-card-details">
-                                      <h4 class="feature-card-title">Number of Referral</h4>
-                                      <p class="feature-card-text">0</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="feature-card two">
-                                    <div class="feature-card-icon">
-                                      <img src="assets/img/update/icon/feature-icon1-3.svg" alt="Icon"/>
-                                    </div>
-                                    <div class="feature-card-details">
-                                      <h4 class="feature-card-title">Active Package</h4>
-                                      <p class="feature-card-text">Premium Plan</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="feature-card two">
-                                    <div class="feature-card-icon">
-                                      <img src="assets/img/update/icon/feature-icon1-2.svg" alt="Icon"/>
-                                    </div>
-                                    <div class="feature-card-details">
-                                      <h4 class="feature-card-title">Total Earnings</h4>
-                                      <p class="feature-card-text">$180</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="footer-widget two widget-newsletter">
-                            <form class="newsletter-form col-12">
-                                <div class="form-group"><input disabled class="form-control" type="email" placeholder="Your Referral Code: https://aanana.come?282d2" /></div>
-                                <button type="submit" class="eg-btn btn5">Copy</button>
-                            </form>
-                        </div>
-                    </section>
+                  <?php include 'assets/php/dashboard_section.php'; ?>
 
-                    <div class="row justify-content-center pb-70">
+                    <div class="row justify-content-center pb-70 ">
                         <div class="col-lg-8">
-                            <div class="document-form-wrap">
-                                <h4 class="title">Withdrawal Form</h4>
+                            <div class="document-form-wrap two text-left">
+                                <h4 class="title text-center">Withdrawal Form</h4>
                                 <form novalidate>
-                                    <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-grp">
-                                            <input type="text" placeholder="Enter your name" name="name" value/>
-                                            <p class="form_error"></p>
+                                    <div class="eg-login__input-wrapper text-left">
+                                        <div class="eg-login__input-box">
+                                            <div class="eg-login__input">
+                                                <label for="amount">Withdrawal Amount</label>
+                                                <input type="number" id="amount" name="amount" placeholder="Enter amount" required />
+                                                <p class="form_error"></p>
+                                            </div>
+                                        </div>
+                                        <div class="eg-login__input-box">
+                                            <div class="eg-login__input">
+                                                <label for="fee">Withdrawal Fee</label>
+                                                <input type="number" id="fee" name="fee" disabled />
+                                                <p class="form_error"></p>
+                                            </div>
+                                        </div>
+                                        <div class="eg-login__input-box">
+                                            <div class="eg-login__input">
+                                                <label for="usdt_address">USDT Address</label>
+                                                <input type="text" id="usdt_address" name="usdt_address" placeholder="USDT Address only" required />
+                                                <p class="form_error">Network: TrC20 & bep20</p>
+                                            </div>
+                                        </div>
+                                        <div class="eg-login__input-box">
+                                            <div class="eg-login__input">
+                                                <label for="withdrawal_password">Withdrawal Password</label>
+                                                <div class="eg-password-show">
+                                                    <input id="withdrawal_password" type="password" placeholder="Min. 6 characters" name="withdrawal_password" required />
+                                                    <div class="eg-login__input-eye">
+                                                        <span class="open-close">
+                                                            <!-- Eye icon SVG here -->
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <p class="form_error"></p>
+                                            </div>
                                         </div>
                                     </div>
-        
-                                    <div class="col-md-6">
-                                        <div class="form-grp">
-                                            <input type="email" placeholder="Enter your email" name="email" value />
-                                            <p class="form_error"></p>
-                                        </div>
-                                    </div>
-                                    </div>
-        
-                                    <div class="form-grp">
-                                        <textarea placeholder="Enter your message..." name="message"></textarea>
-                                        <p class="form_error"></p>
-                                    </div>
-                                    <button type="submit" class="eg-btn">Send Message</button>
+                                    <button type="submit" class="eg-btn">
+                                        <span class="button-text">Withdraw</span>
+                                        <span class="spinner-border d-none" role="status"></span>
+                                    </button>
                                 </form>
                             </div>
                         </div>
@@ -297,7 +268,7 @@
                                     <div class="widget footer-widget">
                                         <div class="widget-about">
                                             <div class="footer-logo">
-                                                <a href="index.html" class=""><img src="assets/img/logo/logo.png" style="height: 35px;" alt="Warren & Co" /></a>
+                                                <a href="index.php" class=""><img src="assets/img/logo/logo.png" style="height: 35px;" alt="Warren & Co" /></a>
                                             </div>
                                             <p class="about-text">Warren & Co is a cutting-edge blockchain technology company at the forefront of innovation in the decentralized ledger space. Established in 2025</p>
                                             <div class="social-btn style2">
@@ -352,6 +323,11 @@
 
         <!-- Swiper JS -->
         <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+         <!-- SweetAlert -->
+         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.17.2/dist/sweetalert2.all.min.js" integrity="sha256-lCHT/LfuZjRp+PdpWns/vKrnSn367D/g1E6Ju18wiH0=" crossorigin="anonymous"></script>
+
         <script src="assets/js/main.js"></script>
+        <script src="assets/js/withdrawal.js"></script>
     </body>
 </html>

@@ -47,29 +47,29 @@
                                         <div class="menu-wrap">
                                             <nav class="menu-nav">
                                                 <div class="logo">
-                                                    <a href="index.html" class=""><img src="assets/img/logo/logo.png" alt="Logo" /></a>
+                                                    <a href="index.php" class=""><img src="assets/img/logo/logo.png" alt="Logo" /></a>
                                                 </div>
                                                 <div class="navbar-wrap main-menu d-none d-lg-flex">
                                                     <ul class="navigation">
                                                         <!--[-->
                                                         <li class="">
-                                                            <a aria-current="page" href="index.html" class="router-link-active router-link-exact-active"><span></span>Home</a>
+                                                            <a aria-current="page" href="index.php" class="router-link-active router-link-exact-active"><span></span>Home</a>
                                                             <!---->
                                                         </li>
                                                         <li class="">
-                                                            <a aria-current="page" href="dashboard.html" class="router-link-active router-link-exact-active"><span></span>Dashboard</a>
+                                                            <a aria-current="page" href="dashboard.php" class="router-link-active router-link-exact-active"><span></span>Dashboard</a>
                                                             <!---->
                                                         </li>
                                                         <li class="">
-                                                            <a aria-current="page" href="index.html#blockchain" class="router-link-active router-link-exact-active"><span></span>Why Warren & Co</a>
+                                                            <a aria-current="page" href="index.php#blockchain" class="router-link-active router-link-exact-active"><span></span>Why Warren & Co</a>
                                                             <!---->
                                                         </li>
                                                         <li class="">
-                                                            <a aria-current="page" href="index.html#feature" class="router-link-active router-link-exact-active"><span></span>Features</a>
+                                                            <a aria-current="page" href="index.php#feature" class="router-link-active router-link-exact-active"><span></span>Features</a>
                                                             <!---->
                                                         </li>
                                                         <li class="">
-                                                            <a aria-current="page" href="index.html#package" class="router-link-active router-link-exact-active"><span></span>Packages</a>
+                                                            <a aria-current="page" href="index.php#package" class="router-link-active router-link-exact-active"><span></span>Packages</a>
                                                             <!---->
                                                         </li>
                                                         <li class="">
@@ -81,7 +81,7 @@
                                                 </div>
                                                 <div class="header-action">
                                                     <ul class="list-wrap">
-                                                        <li class="header-login"><a href="login.html" class="btn2">LOGIN</a></li>
+                                                        <li class="header-login"><a href="login.php" class="btn2">LOGIN</a></li>
                                                     </ul>
                                                 </div>
                                                 <div class="mobile-nav-toggler"><i class="fas fa-bars"></i></div>
@@ -98,19 +98,19 @@
                             <nav class="menu-box">
                                 <div class="close-btn"><i class="fas fa-times"></i></div>
                                 <div class="nav-logo">
-                                    <a href="index.html" class=""><img src="assets/img/logo/logo.png" alt="Logo" /></a>
+                                    <a href="index.php" class=""><img src="assets/img/logo/logo.png" alt="Logo" /></a>
                                 </div>
                                 <div class="menu-outer">
                                     <ul class="navigation">
                                         <!--[-->
-                                        <li class=""><a aria-current="page" href="index.html" class="router-link-active router-link-exact-active">Home</a></li>
-                                        <li class=""><a aria-current="page" href="dashboard.html" class="router-link-active router-link-exact-active">Dashboard</a></li>
-                                        <li class=""><a aria-current="page" href="index.html#blockchain" class="router-link-active router-link-exact-active">Why Warren & Co</a></li>
-                                        <li class=""><a aria-current="page" href="index.html#feature" class="router-link-active router-link-exact-active">Feature</a></li>
-                                        <li class=""><a aria-current="page" href="index.html#package" class="router-link-active router-link-exact-active">Package</a></li>
+                                        <li class=""><a aria-current="page" href="index.php" class="router-link-active router-link-exact-active">Home</a></li>
+                                        <li class=""><a aria-current="page" href="dashboard.php" class="router-link-active router-link-exact-active">Dashboard</a></li>
+                                        <li class=""><a aria-current="page" href="index.php#blockchain" class="router-link-active router-link-exact-active">Why Warren & Co</a></li>
+                                        <li class=""><a aria-current="page" href="index.php#feature" class="router-link-active router-link-exact-active">Feature</a></li>
+                                        <li class=""><a aria-current="page" href="index.php#package" class="router-link-active router-link-exact-active">Package</a></li>
                                         
                                         <li class=""><a href="#footer" class="">Contact</a></li>
-                                        <li class="header-login"><a href="login.html" class="btn2">LOGIN</a></li>
+                                        <li class="header-login"><a href="login.php" class="btn2">LOGIN</a></li>
                                         <!--]-->
                                     </ul>
                                 </div>
@@ -157,7 +157,7 @@
                                             <h3 class="hero-title2">With Daily Earnings</h3>
                                             <div class="hero-content">
                                                 <p class="hero-text">Secure your financial future by investing in Web3. Watch your money grow as you take advantage of the world's leading digital asset. Start today and earn more with every smart move!</p>
-                                                <a href="register.html" class="eg-btn btn3"> Get Started Today </a>
+                                                <a href="register.php" class="eg-btn btn3"> Get Started Today </a>
                                             </div>
                                         </div>
                                     </div>
@@ -322,7 +322,7 @@
                                             <h3 class="plan-title">Basic Plan</h3>
                                             <p class="plan-price">$18</p>
                                             <p class="plan-returns">Withdraw 8% daily</p>
-                                            <a href="register.html" class="eg-btn btn3">Invest Now</a>
+                                            <a href="register.php" class="eg-btn btn3">Invest Now</a>
                                         </div>
                                     </div>
                                     <!-- Premium Plan -->
@@ -334,7 +334,7 @@
                                             <h3 class="plan-title">Premium Plan</h3>
                                             <p class="plan-price">$45</p>
                                             <p class="plan-returns">Withdraw 8% daily</p>
-                                            <a href="register.html" class="eg-btn btn3">Invest Now</a>
+                                            <a href="register.php" class="eg-btn btn3">Invest Now</a>
                                         </div>
                                     </div>
                                     <!-- VIP Plan -->
@@ -346,7 +346,7 @@
                                             <h3 class="plan-title">VIP Plan</h3>
                                             <p class="plan-price">$100</p>
                                             <p class="plan-returns">Withdraw 8% daily</p>
-                                            <a href="register.html" class="eg-btn btn3">Invest Now</a>
+                                            <a href="register.php" class="eg-btn btn3">Invest Now</a>
                                         </div>
                                     </div>
                                     <!-- Royalty Plan -->
@@ -358,7 +358,7 @@
                                             <h3 class="plan-title">Royalty Plan</h3>
                                             <p class="plan-price">$200</p>
                                             <p class="plan-returns">Withdraw 8% daily</p>
-                                            <a href="register.html" class="eg-btn btn3">Invest Now</a>
+                                            <a href="register.php" class="eg-btn btn3">Invest Now</a>
                                         </div>
                                     </div>
                                     <!-- Master Plan -->
@@ -429,7 +429,7 @@
                                                 Earn daily returns, withdraw easily, and enjoy a seamless investment experience.  
                                                 <a class="text-title text-decoration-underline" href="#">Start investing today and secure your future.</a>
                                             </p>
-                                            <a href="login.html" class="eg-btn btn3"> Get Started </a>
+                                            <a href="login.php" class="eg-btn btn3"> Get Started </a>
                                         </div>
                                     </div>
                                 </div>
@@ -642,7 +642,7 @@
                                     <div class="widget footer-widget">
                                         <div class="widget-about">
                                             <div class="footer-logo">
-                                                <a href="index.html" class=""><img src="assets/img/logo/logo.png" style="height: 35px;" alt="Warren & Co" /></a>
+                                                <a href="index.php" class=""><img src="assets/img/logo/logo.png" style="height: 35px;" alt="Warren & Co" /></a>
                                             </div>
                                             <p class="about-text">Warren & Co is a cutting-edge blockchain technology company at the forefront of innovation in the decentralized ledger space. Established in 2025</p>
                                             <div class="social-btn style2">

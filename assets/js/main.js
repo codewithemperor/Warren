@@ -15,6 +15,15 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    document.querySelectorAll('.eg-login__input-eye').forEach(eyeIcon => {
+        eyeIcon.addEventListener('click', function() {
+            const input = this.closest('.eg-password-show').querySelector('input');
+            const isPassword = input.type === 'password';
+            input.type = isPassword ? 'text' : 'password';
+            this.querySelector('svg').style.stroke = isPassword ? '#2ecc71' : '#95a5a6';
+        });
+    });
+    
     // Function to open mobile menu
     function openMobileMenu() {
         document.body.classList.add("mobile-menu-visible");

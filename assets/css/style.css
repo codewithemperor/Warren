@@ -2447,6 +2447,9 @@ label {
     padding: 60px 50px 50px;
     text-align: center;
 }
+.document-form-wrap.two{
+    text-align: left !important;
+}
 .document-form-wrap .title {
     font-size: 28px;
     margin-bottom: 35px;

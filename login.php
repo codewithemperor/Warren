@@ -1,3 +1,4 @@
+<?php include 'assets/php/checkAuthLoginRegister.php'; ?>
 <!DOCTYPE html>
 <html data-capo="">
     
@@ -20,6 +21,9 @@
         
         <!-- Swiper CSS -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
+        <!-- SweetAlert2 -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.17.2/dist/sweetalert2.min.css" integrity="sha256-SCRy3fXoOamBaidKByHs9iJVLYJ65R/v6ycZNN4JhmE=" crossorigin="anonymous">
 
         <!-- Toastify css -->
          <link rel="stylesheet" href="assets/css/toastify.css">
@@ -44,25 +48,25 @@
                                     <div class="menu-wrap">
                                         <nav class="menu-nav">
                                             <div class="logo">
-                                                <a href="index.html" class=""><img src="assets/img/logo/logo.png" alt="Logo" /></a>
+                                                <a href="index.php" class=""><img src="assets/img/logo/logo.png" alt="Logo" /></a>
                                             </div>
                                             <div class="navbar-wrap main-menu d-none d-lg-flex">
                                                 <ul class="navigation">
                                                     <!--[-->
                                                     <li class="">
-                                                        <a aria-current="page" href="index.html" class="router-link-active router-link-exact-active"><span></span>Home</a>
+                                                        <a aria-current="page" href="index.php" class="router-link-active router-link-exact-active"><span></span>Home</a>
                                                         <!---->
                                                     </li>
                                                     <li class="">
-                                                        <a aria-current="page" href="index.html#blockchain" class="router-link-active router-link-exact-active"><span></span>Why Warren & Co</a>
+                                                        <a aria-current="page" href="index.php#blockchain" class="router-link-active router-link-exact-active"><span></span>Why Warren & Co</a>
                                                         <!---->
                                                     </li>
                                                     <li class="">
-                                                        <a aria-current="page" href="index.html#feature" class="router-link-active router-link-exact-active"><span></span>Features</a>
+                                                        <a aria-current="page" href="index.php#feature" class="router-link-active router-link-exact-active"><span></span>Features</a>
                                                         <!---->
                                                     </li>
                                                     <li class="">
-                                                        <a aria-current="page" href="index.html#package" class="router-link-active router-link-exact-active"><span></span>Packages</a>
+                                                        <a aria-current="page" href="index.php#package" class="router-link-active router-link-exact-active"><span></span>Packages</a>
                                                         <!---->
                                                     </li>
                                                     <li class="">
@@ -74,7 +78,7 @@
                                             </div>
                                             <div class="header-action">
                                                 <ul class="list-wrap">
-                                                    <li class="header-login"><a href="login.html" class="btn2">LOGIN</a></li>
+                                                    <li class="header-login"><a href="login.php" class="btn2">LOGIN</a></li>
                                                 </ul>
                                             </div>
                                             <div class="mobile-nav-toggler"><i class="fas fa-bars"></i></div>
@@ -91,15 +95,15 @@
                         <nav class="menu-box">
                             <div class="close-btn"><i class="fas fa-times"></i></div>
                             <div class="nav-logo">
-                                <a href="index.html" class=""><img src="assets/img/logo/logo.png" alt="Logo" /></a>
+                                <a href="index.php" class=""><img src="assets/img/logo/logo.png" alt="Logo" /></a>
                             </div>
                             <div class="menu-outer">
                                 <ul class="navigation">
                                     <!--[-->
-                                    <li class=""><a aria-current="page" href="index.html" class="router-link-active router-link-exact-active">Home</a></li>
-                                    <li class=""><a aria-current="page" href="index.html#blockchain" class="router-link-active router-link-exact-active">Why Warren & Co</a></li>
-                                    <li class=""><a aria-current="page" href="index.html#feature" class="router-link-active router-link-exact-active">Feature</a></li>
-                                    <li class=""><a aria-current="page" href="index.html#package" class="router-link-active router-link-exact-active">Package</a></li>
+                                    <li class=""><a aria-current="page" href="index.php" class="router-link-active router-link-exact-active">Home</a></li>
+                                    <li class=""><a aria-current="page" href="index.php#blockchain" class="router-link-active router-link-exact-active">Why Warren & Co</a></li>
+                                    <li class=""><a aria-current="page" href="index.php#feature" class="router-link-active router-link-exact-active">Feature</a></li>
+                                    <li class=""><a aria-current="page" href="index.php#package" class="router-link-active router-link-exact-active">Package</a></li>
                                     
                                     <li class=""><a href="#footer" class="">Contact</a></li>
                                     <!--]-->
@@ -150,16 +154,16 @@
                                             <h3 class="eg-login__title">Sign In WC</h3>
                                             <p>
                                                 Don't have an account?
-                                                <span><a href="register.html" class="">Sign Up</a></span>
+                                                <span><a href="register.php" class="">Sign Up</a></span>
                                             </p>
                                         </div>
                                         <div class="eg-login__option">
-                                            <form novalidate>
+                                            <form id="loginForm" novalidate>
                                                 <div class="eg-login__input-wrapper">
                                                     <div class="eg-login__input-box">
                                                         <div class="eg-login__input">
                                                             <label for="email">Your Email</label>
-                                                            <input type="email" placeholder="Enter your email" name="email" />
+                                                            <input type="email" id="email" placeholder="Enter your email" name="email" />
                                                             <p class="form_error"></p>
                                                         </div>
                                                     </div>
@@ -187,11 +191,14 @@
                                                         <label for="remeber">Remember me</label>
                                                     </div>
                                                     <div class="eg-login__forgot">
-                                                        <a href="forgot.html" class="">Forgot Password?</a>
+                                                        <a href="forgot.php" class="">Forgot Password?</a>
                                                     </div>
                                                 </div>
                                                 <div class="eg-login__bottom">
-                                                    <button type="submit" class="eg-btn w-100">Login</button>
+                                                    <button type="submit" id="loginButton" class="eg-btn w-100">
+                                                        <span class="button-text">Login</span>
+                                                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                                    </button>
                                                 </div>
                                             </form>
                                         </div>
@@ -253,7 +260,7 @@
                                 <div class="widget footer-widget">
                                     <div class="widget-about">
                                         <div class="footer-logo">
-                                            <a href="index.html" class=""><img src="assets/img/logo/logo.png" style="height: 35px;" alt="Warren & Co" /></a>
+                                            <a href="index.php" class=""><img src="assets/img/logo/logo.png" style="height: 35px;" alt="Warren & Co" /></a>
                                         </div>
                                         <p class="about-text">Warren & Co is a cutting-edge blockchain technology company at the forefront of innovation in the decentralized ledger space. Established in 2025</p>
                                         <div class="social-btn style2">
@@ -309,7 +316,11 @@
         <!-- Swiper JS -->
         <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
+        <!-- SweetAlert -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.17.2/dist/sweetalert2.all.min.js" integrity="sha256-lCHT/LfuZjRp+PdpWns/vKrnSn367D/g1E6Ju18wiH0=" crossorigin="anonymous"></script>
+
         <script src="assets/js/main.js"></script>
+        <script src="assets/js/login.js"></script>
 
     </body>
 </html>

@@ -1,3 +1,4 @@
+<?php include 'assets/php/checkAuthLoginRegister.php'; ?>
 <!DOCTYPE html>
 <html data-capo="">
     
@@ -20,6 +21,9 @@
         
         <!-- Swiper CSS -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
+        <!-- SweetAlert2 -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.17.2/dist/sweetalert2.min.css" integrity="sha256-SCRy3fXoOamBaidKByHs9iJVLYJ65R/v6ycZNN4JhmE=" crossorigin="anonymous">
 
         <!-- Toastify css -->
          <link rel="stylesheet" href="assets/css/toastify.css">
@@ -44,25 +48,25 @@
                                     <div class="menu-wrap">
                                         <nav class="menu-nav">
                                             <div class="logo">
-                                                <a href="index.html" class=""><img src="assets/img/logo/logo.png" alt="Logo" /></a>
+                                                <a href="index.php" class=""><img src="assets/img/logo/logo.png" alt="Logo" /></a>
                                             </div>
                                             <div class="navbar-wrap main-menu d-none d-lg-flex">
                                                 <ul class="navigation">
                                                     <!--[-->
                                                     <li class="">
-                                                        <a aria-current="page" href="index.html" class="router-link-active router-link-exact-active"><span></span>Home</a>
+                                                        <a aria-current="page" href="index.php" class="router-link-active router-link-exact-active"><span></span>Home</a>
                                                         <!---->
                                                     </li>
                                                     <li class="">
-                                                        <a aria-current="page" href="index.html#blockchain" class="router-link-active router-link-exact-active"><span></span>Why Warren & Co</a>
+                                                        <a aria-current="page" href="index.php#blockchain" class="router-link-active router-link-exact-active"><span></span>Why Warren & Co</a>
                                                         <!---->
                                                     </li>
                                                     <li class="">
-                                                        <a aria-current="page" href="index.html#feature" class="router-link-active router-link-exact-active"><span></span>Features</a>
+                                                        <a aria-current="page" href="index.php#feature" class="router-link-active router-link-exact-active"><span></span>Features</a>
                                                         <!---->
                                                     </li>
                                                     <li class="">
-                                                        <a aria-current="page" href="index.html#package" class="router-link-active router-link-exact-active"><span></span>Packages</a>
+                                                        <a aria-current="page" href="index.php#package" class="router-link-active router-link-exact-active"><span></span>Packages</a>
                                                         <!---->
                                                     </li>
                                                     <li class="">
@@ -74,7 +78,7 @@
                                             </div>
                                             <div class="header-action">
                                                 <ul class="list-wrap">
-                                                    <li class="header-login"><a href="login.html" class="btn2">LOGIN</a></li>
+                                                    <li class="header-login"><a href="login.php" class="btn2">LOGIN</a></li>
                                                 </ul>
                                             </div>
                                             <div class="mobile-nav-toggler"><i class="fas fa-bars"></i></div>
@@ -91,15 +95,15 @@
                         <nav class="menu-box">
                             <div class="close-btn"><i class="fas fa-times"></i></div>
                             <div class="nav-logo">
-                                <a href="index.html" class=""><img src="assets/img/logo/logo.png" alt="Logo" /></a>
+                                <a href="index.php" class=""><img src="assets/img/logo/logo.png" alt="Logo" /></a>
                             </div>
                             <div class="menu-outer">
                                 <ul class="navigation">
                                     <!--[-->
-                                    <li class=""><a aria-current="page" href="index.html" class="router-link-active router-link-exact-active">Home</a></li>
-                                    <li class=""><a aria-current="page" href="index.html#blockchain" class="router-link-active router-link-exact-active">Why Warren & Co</a></li>
-                                    <li class=""><a aria-current="page" href="index.html#feature" class="router-link-active router-link-exact-active">Feature</a></li>
-                                    <li class=""><a aria-current="page" href="index.html#package" class="router-link-active router-link-exact-active">Package</a></li>
+                                    <li class=""><a aria-current="page" href="index.php" class="router-link-active router-link-exact-active">Home</a></li>
+                                    <li class=""><a aria-current="page" href="index.php#blockchain" class="router-link-active router-link-exact-active">Why Warren & Co</a></li>
+                                    <li class=""><a aria-current="page" href="index.php#feature" class="router-link-active router-link-exact-active">Feature</a></li>
+                                    <li class=""><a aria-current="page" href="index.php#package" class="router-link-active router-link-exact-active">Package</a></li>
                                     
                                     <li class=""><a href="#footer" class="">Contact</a></li>
                                     <!--]-->
@@ -150,31 +154,36 @@
                                             <h3 class="eg-login__title">Sign Up WC</h3>
                                             <p>
                                                 Already have an account?
-                                                <span><a href="login.html" class="">Sign In</a></span>
+                                                <span><a href="login.php" class="">Sign In</a></span>
                                             </p>
                                         </div>
                                         <div class="eg-login__option">
-                                            <form novalidate>
+                                            <form id="registrationForm" novalidate>
                                                 <div class="eg-login__input-wrapper">
+                                                    <!-- Name Field -->
                                                     <div class="eg-login__input-box">
                                                         <div class="eg-login__input">
-                                                            <label for="name">Your Name</label>
-                                                            <input type="text" placeholder="Enter your name" name="name" />
+                                                            <label for="full_name">Your Name</label>
+                                                            <input type="text" placeholder="Enter your name" name="full_name" id="full_name" required>
                                                             <p class="form_error"></p>
                                                         </div>
                                                     </div>
+
+                                                    <!-- Email Field -->
                                                     <div class="eg-login__input-box">
                                                         <div class="eg-login__input">
                                                             <label for="email">Your Email</label>
-                                                            <input type="email" placeholder="Enter your email" name="email" />
+                                                            <input type="email" placeholder="Enter your email" name="email" id="email" required>
                                                             <p class="form_error"></p>
                                                         </div>
                                                     </div>
+
+                                                    <!-- Password Field -->
                                                     <div class="eg-login__input-box">
                                                         <div class="eg-login__input">
                                                             <label for="password">Password</label>
                                                             <div class="eg-password-show">
-                                                                <input id="password" type="password" placeholder="Min. 6 characters" name="password" />
+                                                                <input type="password" placeholder="Min. 6 characters" name="password" id="password" required>
                                                                 <div class="eg-login__input-eye">
                                                                     <span class="open-close">
                                                                         <svg width="18" height="14" viewBox="0 0 18 14" fill="current" xmlns="http://www.w3.org/2000/svg">
@@ -187,21 +196,74 @@
                                                             <p class="form_error"></p>
                                                         </div>
                                                     </div>
+
+                                                    <!-- Confirm Password Field -->
+                                                    <div class="eg-login__input-box">
+                                                        <div class="eg-login__input">
+                                                            <label for="confirm_password">Confirm Password</label>
+                                                            <div class="eg-password-show">
+                                                                <input type="password" placeholder="Confirm password" name="confirm_password" id="confirm_password" required>
+                                                                <div class="eg-login__input-eye">
+                                                                    <span class="open-close">
+                                                                        <svg width="18" height="14" viewBox="0 0 18 14" fill="current" xmlns="http://www.w3.org/2000/svg">
+                                                                            <path d="M1 6.77778C1 6.77778 3.90909 1 9 1C14.0909 1 17 6.77778 17 6.77778C17 6.77778 14.0909 12.5556 9 12.5556C3.90909 12.5556 1 6.77778 1 6.77778Z" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"></path>
+                                                                            <path d="M9.00018 8.94466C10.2052 8.94466 11.182 7.97461 11.182 6.77799C11.182 5.58138 10.2052 4.61133 9.00018 4.61133C7.79519 4.61133 6.81836 5.58138 6.81836 6.77799C6.81836 7.97461 7.79519 8.94466 9.00018 8.94466Z" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"></path>
+                                                                        </svg>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                            <p class="form_error"></p>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Withdrawal Password Field -->
+                                                    <div class="eg-login__input-box">
+                                                        <div class="eg-login__input">
+                                                            <label for="withdrawal_password">Withdrawal Password</label>
+                                                            <div class="eg-password-show">
+                                                                <input type="password" placeholder="Withdrawal password" name="withdrawal_password" id="withdrawal_password" required>
+                                                                <div class="eg-login__input-eye">
+                                                                    <span class="open-close">
+                                                                        <svg width="18" height="14" viewBox="0 0 18 14" fill="current" xmlns="http://www.w3.org/2000/svg">
+                                                                            <path d="M1 6.77778C1 6.77778 3.90909 1 9 1C14.0909 1 17 6.77778 17 6.77778C17 6.77778 14.0909 12.5556 9 12.5556C3.90909 12.5556 1 6.77778 1 6.77778Z" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"></path>
+                                                                            <path d="M9.00018 8.94466C10.2052 8.94466 11.182 7.97461 11.182 6.77799C11.182 5.58138 10.2052 4.61133 9.00018 4.61133C7.79519 4.61133 6.81836 5.58138 6.81836 6.77799C6.81836 7.97461 7.79519 8.94466 9.00018 8.94466Z" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"></path>
+                                                                        </svg>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                            <p class="form_error"></p>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Referral Code Field -->
+                                                    <div class="eg-login__input-box">
+                                                        <div class="eg-login__input">
+                                                            <label for="referral_code">Referral Code (optional)</label>
+                                                            <input type="text" placeholder="Enter referral code" name="referral_code" id="referral_code">
+                                                            <p class="form_error"></p>
+                                                        </div>
+                                                    </div>
                                                 </div>
+
+                                                <!-- Remember me and Submit Button -->
                                                 <div class="eg-login__suggetions d-flex align-items-center justify-content-between mb-20">
                                                     <div class="eg-login__remeber">
-                                                        <input id="remeber" type="checkbox" />
-                                                        <label for="remeber">Remember me</label>
+                                                        <input id="remember" type="checkbox" name="remember">
+                                                        <label for="remember">Remember me</label>
                                                     </div>
                                                     <div class="eg-login__forgot">
-                                                        <a href="forgot.html" class="">Forgot Password?</a>
+                                                        <a href="forgot.php" class="">Forgot Password?</a>
                                                     </div>
                                                 </div>
                                                 <div class="eg-login__bottom">
-                                                    <button type="submit" class="eg-btn w-100">Register</button>
+                                                    <button type="submit" class="eg-btn w-100" id="registerButton">
+                                                        <span class="button-text">Register</span>
+                                                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                                    </button>
                                                 </div>
                                             </form>
                                         </div>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -260,7 +322,7 @@
                                 <div class="widget footer-widget">
                                     <div class="widget-about">
                                         <div class="footer-logo">
-                                            <a href="index.html" class=""><img src="assets/img/logo/logo.png" style="height: 35px;" alt="Warren & Co" /></a>
+                                            <a href="index.php" class=""><img src="assets/img/logo/logo.png" style="height: 35px;" alt="Warren & Co" /></a>
                                         </div>
                                         <p class="about-text">Warren & Co is a cutting-edge blockchain technology company at the forefront of innovation in the decentralized ledger space. Established in 2025</p>
                                         <div class="social-btn style2">
@@ -316,7 +378,11 @@
         <!-- Swiper JS -->
         <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
+        <!-- SweetAlert -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.17.2/dist/sweetalert2.all.min.js" integrity="sha256-lCHT/LfuZjRp+PdpWns/vKrnSn367D/g1E6Ju18wiH0=" crossorigin="anonymous"></script>
+
         <script src="assets/js/main.js"></script>
+        <script src="assets/js/register.js" defer></script>
 
     </body>
 </html>
