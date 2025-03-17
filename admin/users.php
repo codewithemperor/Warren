@@ -93,27 +93,12 @@
 
 
                     <div class="row mt-4">
-                        <div class="col">
-                            <div class="rounded-col table-responsive">
-                                <table class="table table-hover" id="customers">
-                                    <thead>
-                                        <tr class="table-light text-center">
-                                            <th>ID</th>
-                                            <th>Full Name</th>
-                                            <th>Email</th>
-                                            <th>Referral Code</th>
-                                            <th>Referred By</th>
-                                            <th>Status</th>
-                                            <th>Registered On</th> <!-- New column -->
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <!-- Rows will be populated dynamically by user.js -->
-                                    </tbody>
-                                </table>
-                            </div>
+                    <div class="col">
+                        <div class="rounded-col table-responsive" id="tableContainer">
+                            <!-- The table will be inserted here by JavaScript -->
                         </div>
                     </div>
+                </div>
 
                    
 

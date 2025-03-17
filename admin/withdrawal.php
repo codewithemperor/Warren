@@ -91,29 +91,12 @@
 
 
                     <div class="row mt-4">
-                        <div class="col">
-                            <div class="rounded-col table-responsive">
-                                <table class="table table-hover" id="orders">
-                                    <thead>
-                                        <tr class="table-light text-center">
-                                            <th>ID</th>
-                                            <th>Username</th>
-                                            <th>Email</th>
-                                            <th>Amount</th>
-                                            <th>Fee</th>
-                                            <th>USDT Address</th>
-                                            <th>Status</th>
-                                            <th>Created At</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <!-- Rows will be populated dynamically by withdrawal.js -->
-                                    </tbody>
-                                </table>
-                            </div>
+                    <div class="col">
+                        <div class="rounded-col table-responsive" id="tableContainer">
+                            <!-- The table will be inserted here by JavaScript -->
                         </div>
                     </div>
+                </div>
 
                    
 

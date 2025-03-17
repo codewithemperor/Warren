@@ -16,15 +16,12 @@ try {
             u.created_at, 
             u.is_subscribed,
             r.full_name AS referrer_name,
-            -- Check if the user has an active subscription
-            EXISTS (
-                SELECT 1 
-                FROM subscriptions s 
-                WHERE s.user_id = u.id 
-                AND CURDATE() BETWEEN s.start_date AND s.end_date
-            ) AS is_subscribed_active
+            -- Fetch the package name for active subscriptions
+            COALESCE(p.name, 'N/A') AS package_name
         FROM users u
         LEFT JOIN users r ON u.referred_by = r.id
+        LEFT JOIN subscriptions s ON u.id = s.user_id AND CURDATE() BETWEEN s.start_date AND s.end_date
+        LEFT JOIN packages p ON s.package_id = p.id
     ");
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -41,7 +38,7 @@ try {
             'referral_code' => $user['referral_code'],
             'referred_by' => $user['referred_by'] ? "{$user['referrer_name']} ({$user['referred_by']})" : "N/A", // Format: name(id)
             'created_at' => $user['created_at'],
-            'is_subscribed' => $user['is_subscribed_active'], // Use the dynamic subscription status
+            'package_name' => $user['package_name'], // Use the package name
         ];
     }, $users);
 
@@ -58,4 +55,3 @@ try {
         'message' => $e->getMessage(),
     ]);
 }
-?>

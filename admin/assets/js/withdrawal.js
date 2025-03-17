@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const tableBody = document.querySelector("#orders tbody");
+    const tableContainer = document.getElementById("tableContainer");
 
     // Fetch withdrawal data from the server
     const fetchWithdrawals = async () => {
@@ -11,15 +11,34 @@ document.addEventListener("DOMContentLoaded", () => {
                 throw new Error(result.message || "Failed to fetch withdrawals");
             }
 
-            // Clear existing table rows
-            tableBody.innerHTML = "";
+            // Create the table element
+            const table = document.createElement("table");
+            table.id = "orders";
+            table.className = "table table-hover";
 
-            // Populate the table with withdrawal data
+            // Create the table header
+            const thead = document.createElement("thead");
+            const headerRow = document.createElement("tr");
+            headerRow.className = "table-light text-center";
+            headerRow.innerHTML = `
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Amount</th>
+                <th>Fee</th>
+                <th>USDT Address</th>
+                <th>Status</th>
+                <th>Created At</th>
+                <th>Action</th>
+            `;
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+
+            // Create the table body
+            const tbody = document.createElement("tbody");
             result.withdrawals.forEach(withdrawal => {
                 const row = document.createElement("tr");
                 row.classList.add("text-center");
-
-                // Map withdrawal data to table columns
                 row.innerHTML = `
                     <td>${withdrawal.id}</td>
                     <td>${withdrawal.username}</td>
@@ -34,13 +53,24 @@ document.addEventListener("DOMContentLoaded", () => {
                             <div class='text-center'>
                                 <button class="d-block mb-1 btn btn-p btn-sm me-2" onclick="confirmAction(${withdrawal.id}, 'approved')">Approve</button>
                                 <button class="d-block btn btn-a btn-sm" onclick="confirmAction(${withdrawal.id}, 'rejected')">Reject</button>
-                            
                             </div>
                         ` : ''}
                     </td>
                 `;
+                tbody.appendChild(row);
+            });
+            table.appendChild(tbody);
 
-                tableBody.appendChild(row);
+            // Append the table to the container
+            tableContainer.appendChild(table);
+
+            // Initialize DataTables AFTER the table is appended
+            $('#orders').DataTable({
+                paging: true, // Enable pagination
+                searching: true, // Enable search
+                ordering: true, // Enable sorting
+                info: true, // Show table information
+                responsive: true, // Make the table responsive
             });
         } catch (error) {
             console.error("Error fetching withdrawals:", error);
