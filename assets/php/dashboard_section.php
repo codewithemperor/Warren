@@ -132,7 +132,7 @@ try {
                     <img src="assets/img/update/icon/feature-icon1-2.svg" alt="Icon"/>
                 </div>
                 <div class="feature-card-details">
-                    <h4 class="feature-card-title">Task Earnings </h4>
+                    <h4 class="feature-card-title">Total Task Earnings </h4>
                     <p class="feature-card-text">$<?php echo number_format($totalTaskEarnings, 2); ?></p>
                 </div>
             </div>
@@ -145,8 +145,8 @@ try {
                     <img src="assets/img/update/icon/feature-icon1-2.svg" alt="Icon"/>
                 </div>
                 <div class="feature-card-details">
-                    <h4 class="feature-card-title">Total Earnings</h4>
-                    <p class="feature-card-text">$<?php echo number_format($totalEarnings, 2); ?></p>
+                    <h4 class="feature-card-title">Total Plan Commission</h4>
+                    <p class="feature-card-text">$<?php echo number_format($totalPackageEarnings, 2); ?></p>
                 </div>
             </div>
         </div>

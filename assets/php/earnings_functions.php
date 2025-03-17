@@ -32,13 +32,9 @@ function getTotalTaskEarnings($pdo, $userId, $todayOnly = false) {
 
 function getTotalPackageEarnings($pdo, $userId) {
     $query = "
-        SELECT IFNULL(SUM(
-            (p.price * p.daily_withdrawal_limit / 100) * 
-            (DATEDIFF(CURDATE(), s.start_date) + 1) -- Add 1 to include the current date
-        ), 0)
-        FROM subscriptions s
-        JOIN packages p ON s.package_id = p.id
-        WHERE s.user_id = :user_id
+        SELECT IFNULL(SUM(di.amount), 0) AS total_earnings
+        FROM daily_income di
+        WHERE di.user_id = :user_id
     ";
     $stmt = $pdo->prepare($query);
     $stmt->execute(['user_id' => $userId]);

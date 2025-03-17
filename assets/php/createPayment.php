@@ -34,7 +34,22 @@ $planTitle = $data['planTitle'];
 // Hash the user ID for security
 $hashedUserId = password_hash($userId, PASSWORD_DEFAULT);
 
-$nowPaymentsApiKey = '24E3BED-VRJMVPS-G9BBX04-35M34RZ'; // Replace with your actual API key
+try {
+    $query = "SELECT wallet_address FROM admin_wallet LIMIT 1"; // Assuming the API key is stored in the wallet_address column
+    $stmt = $pdo->query($query);
+    $wallet = $stmt->fetch();
+
+    if (!$wallet) {
+        throw new Exception('NowPayments API key not found in the database');
+    }
+
+    $nowPaymentsApiKey = $wallet['wallet_address']; 
+} catch (Exception $e) {
+    http_response_code(500);
+    echo json_encode(['error' => $e->getMessage()]);
+}
+
+// $nowPaymentsApiKey = '24E3BED-VRJMVPS-G9BBX04-35M34RZ'; // Replace with your actual API key
 $nowPaymentsUrl = 'https://api.nowpayments.io/v1/invoice';
 
 $paymentData = [
@@ -42,9 +57,9 @@ $paymentData = [
     'price_currency' => 'usd',
     'order_id' => $hashedUserId, // Use the hashed user ID as the order ID
     'order_description' => $planTitle, // Include the plan title in the description
-    'ipn_callback_url' => 'https://warrencoinv.com/assets/php/ipnCallback.php', 
-    'success_url' => 'https://warrencoinv.com/dashboard.php', 
-    'cancel_url' => 'https://warrencoinv.com/deposit.php',
+    'ipn_callback_url' => 'http://localhost/warren/assets/php/ipnCallback.php', 
+    'success_url' => 'http://localhost/warren/dashboard.php', 
+    'cancel_url' => 'http://localhost/warren/deposit.php',
 ];
 
 try {

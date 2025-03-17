@@ -6,5 +6,5 @@ session_start();
 session_destroy();
 
 // Redirect to the login page
-header('Location: http://localhost/warren/login.php');
+header('Location: http://localhost/warren/admin/index.php');
 exit();

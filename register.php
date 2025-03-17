@@ -70,7 +70,7 @@
                                                         <!---->
                                                     </li>
                                                     <li class="">
-                                                        <a href="#footer" class=""><span></span>Contact</a>
+                                                        <a href="https://t.me/WarrenC_leading_investment" class=""><span></span>Contact</a>
                                                         <!---->
                                                     </li>
                                                     <!--]-->
@@ -105,7 +105,7 @@
                                     <li class=""><a aria-current="page" href="index.php#feature" class="router-link-active router-link-exact-active">Feature</a></li>
                                     <li class=""><a aria-current="page" href="index.php#package" class="router-link-active router-link-exact-active">Package</a></li>
                                     
-                                    <li class=""><a href="#footer" class="">Contact</a></li>
+                                    <li class=""><a href="https://t.me/WarrenC_leading_investment" class="">Contact</a></li>
                                     <!--]-->
                                 </ul>
                             </div>
@@ -347,7 +347,7 @@
                                     <p class="newsletter-text">Sign up with your email address to receive news and updates</p>
                                     <form class="newsletter-form">
                                         <div class="form-group"><input class="form-control" type="email" placeholder="Your Email Address" /></div>
-                                        <button type="submit" class="eg-btn btn5">Subscribe</button>
+                                        <button type="submit" disabled class="eg-btn btn5">Subscribe</button>
                                     </form>
                                 </div>
                             </div>

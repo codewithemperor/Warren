@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const planContainer = document.getElementById("planContainer");
 
     // Fetch packages from the server
-    fetch('https://warrencoinv.com/assets/php/getPackages.php')
+    fetch('http://localhost/warren/assets/php/getPackages.php')
         .then(response => response.json())
         .then(plans => {
             plans.forEach((plan) => {
@@ -34,13 +34,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
             subscribeButtons.forEach((button) => {
                 button.addEventListener("click", async () => {
+                    // Disable all buttons and change the clicked button to "Loading"
+                    const allButtons = document.querySelectorAll(".eg-btn.btn3, .eg-btn.btn4");
+                    allButtons.forEach(btn => {
+                        btn.disabled = true; // Disable all buttons
+                    });
+
+                    // Change the clicked button to "Loading"
+                    button.textContent = "Loading...";
+
                     const selectedPlanId = button.getAttribute("data-plan-id");
                     const planTitle = button.getAttribute("data-plan-name");
                     const planPrice = button.getAttribute("data-plan-price");
 
                     try {
                         // Create payment request using NowPayments
-                        const response = await fetch("https://warrencoinv.com/assets/php/createPayment.php", {
+                        const response = await fetch("http://localhost/warren/assets/php/createPayment.php", {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json",
@@ -74,6 +83,12 @@ document.addEventListener("DOMContentLoaded", function () {
                             title: 'Error',
                             text: error.message,
                         });
+
+                        // Re-enable all buttons and revert the clicked button to "Subscribe"
+                        allButtons.forEach(btn => {
+                            btn.disabled = false; // Re-enable all buttons
+                        });
+                        button.textContent = "Subscribe"; // Revert the clicked button to "Subscribe"
                     }
                 });
             });

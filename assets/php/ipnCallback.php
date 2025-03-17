@@ -50,7 +50,7 @@ try {
         if ($payment) {
             // Call addSubscription.php to update the database
             $subscriptionResponse = file_get_contents(
-                "https://warrencoinv.com/assets/php/addSubscription.php",
+                "http://localhost/warren/assets/php/addSubscription.php",
                 false,
                 stream_context_create([
                     'http' => [

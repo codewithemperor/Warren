@@ -4,7 +4,7 @@ session_start();
 // Check if the session is active and contains the required data
 if (!isset($_SESSION['user']) || !is_array($_SESSION['user'])) {
     // Session is not active, redirect to login
-    header('Location: https://warrencoinv.com/login.php');
+    header('Location: http://localhost/warren/login.php');
     exit();
 }
 
@@ -22,10 +22,15 @@ foreach ($requiredKeys as $key) {
 
 // If the session is not valid, redirect to login
 if (!$isSessionValid) {
-    header('Location: https://warrencoinv.com/login.php');
+    header('Location: http://localhost/warren/login.php');
     exit();
 }
 
-// If the session is valid, do nothing
-// The deposit page will continue to load
-?>
+// Check if the user is subscribed
+if ($sessionData['is_subscribed']) {
+    // User is subscribed, redirect to dashboard
+    header('Location: http://localhost/warren/dashboard.php');
+    exit();
+}
+
+// If the session is valid and the user is not subscribed, continue loading the deposit page

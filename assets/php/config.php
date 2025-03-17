@@ -6,7 +6,7 @@ define('DB_USER', 'root');       // Default XAMPP username
 define('DB_PASS', '');          // Default XAMPP password (empty)
 
 // Application Settings
-define('APP_URL', 'https://warrencoinv.com/'); // Change 'warren' to your project folder name
+define('APP_URL', 'http://localhost/warren/'); // Change 'warren' to your project folder name
 define('APP_ENV', 'development'); // Change to 'production' when live
 define('APP_TIMEZONE', 'America/New_York'); // Change this to your preferred timezone
 

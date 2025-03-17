@@ -28,7 +28,7 @@ async function registerUser(formData) {
 
   try {
       const response = await fetch(
-          "https://warrencoinv.com/assets/php/register.php",
+          "http://localhost/warren/assets/php/register.php",
           {
               method: "POST",
               headers: {
@@ -48,7 +48,7 @@ async function registerUser(formData) {
               timer: 3000,
               showConfirmButton: false,
               willClose: () => {
-                  window.location.href = "https://warrencoinv.com/deposit.php"; // Redirect to dashboard
+                  window.location.href = "http://localhost/warren/deposit.php"; // Redirect to dashboard
               },
           });
       } else {

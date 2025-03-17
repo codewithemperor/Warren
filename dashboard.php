@@ -76,7 +76,7 @@
                                                             <!---->
                                                         </li>
                                                         <li class="">
-                                                            <a href="#footer" class=""><span></span>Contact</a>
+                                                            <a href="https://t.me/WarrenC_leading_investment" class=""><span></span>Contact</a>
                                                             <!---->
                                                         </li>
                                                         <!--]-->
@@ -112,7 +112,7 @@
                                         <li class=""><a aria-current="page" href="withdrawal.php" class="router-link-active router-link-exact-active">Withdrawal</a></li>
                                         <li class=""><a aria-current="page" href="index.php#feature" class="router-link-active router-link-exact-active">Feature</a></li>
                                         
-                                        <li class=""><a href="#footer" class="">Contact</a></li>
+                                        <li class=""><a href="https://t.me/WarrenC_leading_investment" class="">Contact</a></li>
                                         <li class="header-login"><a href="assets/php/logout.php" class="btn2">LOGOUT</a></li>
                                         <!--]-->
                                     </ul>
@@ -304,7 +304,7 @@
                                         <p class="newsletter-text">Sign up with your email address to receive news and updates</p>
                                         <form class="newsletter-form">
                                             <div class="form-group"><input class="form-control" type="email" placeholder="Your Email Address" /></div>
-                                            <button type="submit" class="eg-btn btn5">Subscribe</button>
+                                            <button type="submit" disabled class="eg-btn btn5">Subscribe</button>
                                         </form>
                                     </div>
                                 </div>
@@ -344,7 +344,7 @@
                 const planContainer = document.getElementById("taskContainer");
 
                 // Fetch tasks from the server
-                fetch('https://warrencoinv.com/assets/php/getTasks.php')
+                fetch('http://localhost/warren/assets/php/getTasks.php')
                     .then(response => response.json())
                     .then(tasks => {
                         tasks.forEach((task) => {
@@ -363,7 +363,7 @@
                                             <p>${task.task_description}</p>
                                             <div class="read-more-btn">
                                                 <a href="#" class="task-link" data-task-id="${task.id}" data-task-url="${task.task_url}">
-                                                    Rate(${task.task_price})
+                                                    Complete Task
                                                     <i class="fas fa-arrow-right"></i>
                                                 </a>
                                             </div>
@@ -384,7 +384,7 @@
                                 const taskUrl = this.getAttribute('data-task-url');
 
                                 // Save the task to the database
-                                fetch('https://warrencoinv.com/assets/php/saveTask.php', {
+                                fetch('http://localhost/warren/assets/php/saveTask.php', {
                                     method: 'POST',
                                     headers: {
                                         'Content-Type': 'application/json'
@@ -403,8 +403,13 @@
                                                 showConfirmButton: false
                                             });
                                         } else {
-                                            // Navigate to the task URL
-                                            window.location.href = taskUrl;
+                                            Swal.fire({
+                                                icon: 'success',
+                                                title: 'Daily Task Earned!',
+                                                text: 'You have successfully completed today’s task. Come back tomorrow for more rewards!',
+                                                timer: 1500,
+                                                showConfirmButton: false
+                                            });
                                         }
                                     })
                                     .catch(error => {

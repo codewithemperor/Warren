@@ -1,7 +1,7 @@
 async function checkAuth() {
   try {
     const response = await fetch(
-      "https://warrencoinv.com/assets/php/checkAuth.php",
+      "http://localhost/warren/assets/php/checkAuth.php",
       {
         method: "GET",
         headers: {
@@ -32,7 +32,7 @@ async function checkAuth() {
     console.log("User is logged in and subscribed:", user);
   } catch (error) {
     console.error("Authentication check failed:", error);
-    window.location.href = "https://warrencoinv.com/login.php"; // Fallback redirect
+    window.location.href = "http://localhost/warren/login.php"; // Fallback redirect
   }
 }
 
