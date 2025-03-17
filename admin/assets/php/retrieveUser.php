@@ -15,7 +15,14 @@ try {
             u.referred_by, 
             u.created_at, 
             u.is_subscribed,
-            r.full_name AS referrer_name
+            r.full_name AS referrer_name,
+            -- Check if the user has an active subscription
+            EXISTS (
+                SELECT 1 
+                FROM subscriptions s 
+                WHERE s.user_id = u.id 
+                AND CURDATE() BETWEEN s.start_date AND s.end_date
+            ) AS is_subscribed_active
         FROM users u
         LEFT JOIN users r ON u.referred_by = r.id
     ");
@@ -34,7 +41,7 @@ try {
             'referral_code' => $user['referral_code'],
             'referred_by' => $user['referred_by'] ? "{$user['referrer_name']} ({$user['referred_by']})" : "N/A", // Format: name(id)
             'created_at' => $user['created_at'],
-            'is_subscribed' => $user['is_subscribed'],
+            'is_subscribed' => $user['is_subscribed_active'], // Use the dynamic subscription status
         ];
     }, $users);
 
@@ -51,3 +58,4 @@ try {
         'message' => $e->getMessage(),
     ]);
 }
+?>
