@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Fetch withdrawal data from the server
     const fetchWithdrawals = async () => {
         try {
-            const response = await fetch("http://localhost/warren/admin/assets/php/getWithdrawal.php");
+            const response = await fetch("https://warrencol.com/admin/assets/php/getWithdrawal.php");
             const result = await response.json();
 
             if (!response.ok) {
@@ -81,7 +81,7 @@ const confirmAction = (id, status) => {
 // Approve a withdrawal
 const approveWithdrawal = async (id) => {
     try {
-        const response = await fetch("http://localhost/warren/admin/assets/php/updateWithdrawalStatus.php", {
+        const response = await fetch("https://warrencol.com/admin/assets/php/updateWithdrawalStatus.php", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -115,7 +115,7 @@ const approveWithdrawal = async (id) => {
 // Reject a withdrawal
 const rejectWithdrawal = async (id) => {
     try {
-        const response = await fetch("http://localhost/warren/admin/assets/php/updateWithdrawalStatus.php", {
+        const response = await fetch("https://warrencol.com/admin/assets/php/updateWithdrawalStatus.php", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

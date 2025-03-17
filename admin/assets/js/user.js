@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Fetch user data from the server
     const fetchUsers = async () => {
         try {
-            const response = await fetch("http://localhost/warren/admin/assets/php/retrieveUser.php");
+            const response = await fetch("https://warrencol.com/admin/assets/php/retrieveUser.php");
             const result = await response.json();
 
             if (!response.ok) {

@@ -57,9 +57,9 @@ $paymentData = [
     'price_currency' => 'usd',
     'order_id' => $hashedUserId, // Use the hashed user ID as the order ID
     'order_description' => $planTitle, // Include the plan title in the description
-    'ipn_callback_url' => 'http://localhost/warren/assets/php/ipnCallback.php', 
-    'success_url' => 'http://localhost/warren/dashboard.php', 
-    'cancel_url' => 'http://localhost/warren/deposit.php',
+    'ipn_callback_url' => 'https://warrencol.com/assets/php/ipnCallback.php', 
+    'success_url' => 'https://warrencol.com/dashboard.php', 
+    'cancel_url' => 'https://warrencol.com/deposit.php',
 ];
 
 try {

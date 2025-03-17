@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
         try {
-            const response = await fetch("http://localhost/warren/admin/assets/php/adminlogin.php", {
+            const response = await fetch("https://warrencol.com/admin/assets/php/adminlogin.php", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
