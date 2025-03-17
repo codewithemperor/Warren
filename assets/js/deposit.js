@@ -7,9 +7,9 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(plans => {
             plans.forEach((plan) => {
                 // Determine button class, text, and disabled state
-                const buttonClass = plan.disabled ? "eg-btn btn4" : "eg-btn btn3";
-                const buttonText = plan.disabled ? "Disabled" : "Subscribe";
-                const disabledAttribute = plan.disabled ? "disabled" : "";
+                const buttonClass = plan.disabled === 1 ? "eg-btn btn4" : "eg-btn btn3";
+                const buttonText = plan.disabled === 1 ? "Disabled" : "Subscribe";
+                const disabledAttribute = plan.disabled === 1 ? "disabled" : "";
 
                 const planHTML = `
                     <div class="col">

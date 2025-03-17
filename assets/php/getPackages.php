@@ -7,11 +7,15 @@ header('Content-Type: application/json');
 require './config.php'; // Ensure this path is correct
 
 try {
-
-
     // Fetch all packages from the database
     $stmt = $pdo->query("SELECT * FROM packages");
-    $packages = $stmt->fetchAll();
+    $packages = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Cast the 'disabled' field to an integer
+    $packages = array_map(function ($package) {
+        $package['disabled'] = (int)$package['disabled'];
+        return $package;
+    }, $packages);
 
     // Return the packages as JSON
     echo json_encode($packages);
@@ -20,3 +24,4 @@ try {
     http_response_code(500);
     echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
 }
+?>
