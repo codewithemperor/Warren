@@ -114,18 +114,16 @@ try {
     }
 
     // Update payment status to 'completed' for the current user
-    $updateQuery = "UPDATE payments SET payment_status = 'completed' WHERE transaction_hash = :transaction_hash AND user_id = :user_id";
+    $updateQuery = "UPDATE payments SET payment_status = 'completed' WHERE user_id = :user_id";
     $updateStmt = $pdo->prepare($updateQuery);
     $updateStmt->execute([
-        'transaction_hash' => $transactionHash,
         'user_id' => $userId,
     ]);
 
     // Fetch payment details for the current user
-    $paymentQuery = "SELECT package_id FROM payments WHERE transaction_hash = :transaction_hash AND user_id = :user_id";
+    $paymentQuery = "SELECT package_id FROM payments WHERE user_id = :user_id";
     $paymentStmt = $pdo->prepare($paymentQuery);
     $paymentStmt->execute([
-        'transaction_hash' => $transactionHash,
         'user_id' => $userId,
     ]);
     $payment = $paymentStmt->fetch();
