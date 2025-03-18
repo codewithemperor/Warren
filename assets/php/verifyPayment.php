@@ -55,12 +55,18 @@ try {
     // Normalize the admin wallet address (convert to lowercase and trim whitespace)
     $adminWallet = strtolower(trim($adminWalletAddress));
 
-    // Normalize the transaction 'to' address (convert to lowercase and trim whitespace)
-    $transactionToAddress = strtolower(trim($transaction['to']));
+    $transactionInput = $transaction['input']; // Raw input data from the transaction
+    if (substr($transactionInput, 0, 10) === '0xa9059cbb') { // Check if it's a token transfer
+        // Extract the recipient address from the input data
+        $recipientAddress = '0x' . substr($transactionInput, 34, 40); // Recipient address is at offset 34-74
+        $recipientAddress = strtolower(trim($recipientAddress)); // Normalize the address
 
-    // Compare the normalized addresses
-    if ($transactionToAddress !== $adminWallet) {
-        throw new Exception("Transaction not sent to the correct wallet. Expected: {$adminWallet}, Received: {$transactionToAddress}");
+        // Compare the recipient address with the admin wallet address
+        if ($recipientAddress !== $adminWallet) {
+            throw new Exception("Transaction not sent to the correct wallet. Expected: {$adminWallet}, Received: {$recipientAddress}");
+        }
+    } else {
+        throw new Exception("Invalid transaction type. Expected a token transfer.");
     }
 
      // Check if the transaction hash has already been used
