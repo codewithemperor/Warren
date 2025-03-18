@@ -18,11 +18,11 @@ $transactionHash = $data['transaction_hash'];
 
 try {
     // Check if the user is logged in
-    if (!isset($_SESSION['user_id'])) {
+    if (!isset($_SESSION['user'])) {
         throw new Exception("User not logged in.");
     }
 
-    $userId = $_SESSION['user_id']; // Get the user ID from the session
+    $userId = $_SESSION['user']['id']; // Get the user ID from the session
 
     // Fetch admin wallet address
     $walletResponse = file_get_contents("https://warrencol.com/assets/php/getAdminWallet.php");
