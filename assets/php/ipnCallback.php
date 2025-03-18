@@ -19,30 +19,18 @@ if (!isset($data['payment_id']) || !isset($data['payment_status']) || !isset($da
 
 $paymentId = $data['payment_id'];
 $paymentStatus = $data['payment_status'];
-$hashedUserId = $data['order_id']; // Hashed user ID from the order_id
+$userId = $data['order_id']; // Directly use the user ID from the order_id
 
 try {
     // Update the database if payment is confirmed
     if ($paymentStatus === 'finished') {
-        // Fetch all users to verify the hashed user ID
-        $query = "SELECT id FROM users";
-        $stmt = $pdo->query($query);
-        $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        // Update payment status to 'completed'
+        $updateQuery = "UPDATE payments SET payment_status = 'completed' WHERE id = :payment_id";
+        $updateStmt = $pdo->prepare($updateQuery);
+        $updateStmt->execute(['payment_id' => $paymentId]);
 
-        $userId = null;
-        foreach ($users as $user) {
-            if (password_verify($user['id'], $hashedUserId)) {
-                $userId = $user['id'];
-                break;
-            }
-        }
-
-        if (!$userId) {
-            throw new Exception('User not found');
-        }
-
-        // Fetch the subscription details associated with this payment
-        $query = "SELECT package_id FROM payments WHERE payment_id = :payment_id";
+        // Fetch the payment details, including package_id
+        $query = "SELECT package_id FROM payments WHERE id = :payment_id";
         $stmt = $pdo->prepare($query);
         $stmt->execute(['payment_id' => $paymentId]);
         $payment = $stmt->fetch();
@@ -57,8 +45,8 @@ try {
                         'method' => 'POST',
                         'header' => 'Content-Type: application/json',
                         'content' => json_encode([
-                            'user_id' => $userId, // Pass the verified user ID
-                            'package_id' => $payment['package_id'],
+                            'user_id' => $userId,
+                            'package_id' => $payment['package_id'], // Use the package_id from the payments table
                             'transaction_hash' => $paymentId,
                         ]),
                     ],

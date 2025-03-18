@@ -26,13 +26,10 @@ if (!isset($data['package_id']) || !isset($data['price']) || !isset($data['planT
     exit;
 }
 
-$userId = $_SESSION['user']['id'];
+$userId = $_SESSION['user']['id']; // Directly use the user ID
 $packageId = $data['package_id'];
 $price = $data['price'];
 $planTitle = $data['planTitle'];
-
-// Hash the user ID for security
-$hashedUserId = password_hash($userId, PASSWORD_DEFAULT);
 
 try {
     $query = "SELECT wallet_address FROM admin_wallet LIMIT 1"; // Assuming the API key is stored in the wallet_address column
@@ -49,20 +46,33 @@ try {
     echo json_encode(['error' => $e->getMessage()]);
 }
 
-// $nowPaymentsApiKey = '24E3BED-VRJMVPS-G9BBX04-35M34RZ'; // Replace with your actual API key
-$nowPaymentsUrl = 'https://api.nowpayments.io/v1/invoice';
-
-$paymentData = [
-    'price_amount' => $price,
-    'price_currency' => 'usd',
-    'order_id' => $hashedUserId, // Use the hashed user ID as the order ID
-    'order_description' => $planTitle, // Include the plan title in the description
-    'ipn_callback_url' => 'https://warrencol.com/assets/php/ipnCallback.php', 
-    'success_url' => 'https://warrencol.com/dashboard.php', 
-    'cancel_url' => 'https://warrencol.com/deposit.php',
-];
-
 try {
+    // Insert payment details into the database
+    $query = "INSERT INTO payments (user_id, package_id, price, payment_status, created_at) 
+              VALUES (:user_id, :package_id, :price, 'pending', NOW())";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute([
+        'user_id' => $userId,
+        'package_id' => $packageId,
+        'price' => $price,
+    ]);
+
+    // Get the last inserted payment ID
+    $paymentId = $pdo->lastInsertId();
+
+    // Create the NowPayments invoice
+    $nowPaymentsUrl = 'https://api-sandbox.nowpayments.io/v1/invoice';
+    $paymentData = [
+        'price_amount' => $price,
+        'price_currency' => 'usd',
+        'order_id' => $paymentId, // Use the payment ID as the order ID
+        'order_description' => $planTitle,
+        'ipn_callback_url' => 'https://warrencol.com/assets/php/ipnCallback.php',
+        'success_url' => 'https://warrencol.com/dashboard.php',
+        'cancel_url' => 'https://warrencol.com/deposit.php',
+        'is_fee_paid_by_user' => true,
+    ];
+
     $ch = curl_init($nowPaymentsUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POST, true);
@@ -82,7 +92,7 @@ try {
     if (isset($responseData['invoice_url'])) {
         echo json_encode([
             'success' => true,
-            'invoice_url' => $responseData['invoice_url'], // Redirect the user to this URL
+            'invoice_url' => $responseData['invoice_url'],
         ]);
     } else {
         $errorMessage = $responseData['message'] ?? 'Failed to create invoice';
