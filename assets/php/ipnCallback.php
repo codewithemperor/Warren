@@ -19,47 +19,50 @@ if (!isset($data['payment_id']) || !isset($data['payment_status']) || !isset($da
 
 $paymentId = $data['payment_id'];
 $paymentStatus = $data['payment_status'];
-$userId = $data['order_id']; // Directly use the user ID from the order_id
+$orderId = $data['order_id']; // Use the order_id to retrieve user_id and package_id
 
 try {
+    // Fetch the payment details, including user_id and package_id
+    $query = "SELECT user_id, package_id FROM payments WHERE id = :order_id";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute(['order_id' => $orderId]);
+    $payment = $stmt->fetch();
+
+    if (!$payment) {
+        throw new Exception('Payment details not found');
+    }
+
+    $userId = $payment['user_id'];
+    $packageId = $payment['package_id'];
+
     // Update the database if payment is confirmed
     if ($paymentStatus === 'finished') {
         // Update payment status to 'completed'
-        $updateQuery = "UPDATE payments SET payment_status = 'completed' WHERE id = :payment_id";
+        $updateQuery = "UPDATE payments SET payment_status = 'completed' WHERE id = :order_id";
         $updateStmt = $pdo->prepare($updateQuery);
-        $updateStmt->execute(['payment_id' => $paymentId]);
+        $updateStmt->execute(['order_id' => $orderId]);
 
-        // Fetch the payment details, including package_id
-        $query = "SELECT package_id FROM payments WHERE id = :payment_id";
-        $stmt = $pdo->prepare($query);
-        $stmt->execute(['payment_id' => $paymentId]);
-        $payment = $stmt->fetch();
+        // Call addSubscription.php to update the database
+        $subscriptionResponse = file_get_contents(
+            "https://warrencol.com/assets/php/addSubscription.php",
+            false,
+            stream_context_create([
+                'http' => [
+                    'method' => 'POST',
+                    'header' => 'Content-Type: application/json',
+                    'content' => json_encode([
+                        'user_id' => $userId,
+                        'package_id' => $packageId,
+                        'transaction_hash' => $paymentId,
+                    ]),
+                ],
+            ])
+        );
 
-        if ($payment) {
-            // Call addSubscription.php to update the database
-            $subscriptionResponse = file_get_contents(
-                "https://warrencol.com/assets/php/addSubscription.php",
-                false,
-                stream_context_create([
-                    'http' => [
-                        'method' => 'POST',
-                        'header' => 'Content-Type: application/json',
-                        'content' => json_encode([
-                            'user_id' => $userId,
-                            'package_id' => $payment['package_id'], // Use the package_id from the payments table
-                            'transaction_hash' => $paymentId,
-                        ]),
-                    ],
-                ])
-            );
+        $subscriptionResult = json_decode($subscriptionResponse, true);
 
-            $subscriptionResult = json_decode($subscriptionResponse, true);
-
-            if (!$subscriptionResult['success']) {
-                throw new Exception($subscriptionResult['error'] ?? 'Failed to update subscription');
-            }
-        } else {
-            throw new Exception('Payment details not found');
+        if (!$subscriptionResult['success']) {
+            throw new Exception($subscriptionResult['error'] ?? 'Failed to update subscription');
         }
     }
 
