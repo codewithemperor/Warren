@@ -52,8 +52,15 @@ try {
     }
 
     // Check if the transaction is sent to the correct wallet
-    if (strtolower($transaction['to']) !== strtolower($adminWalletAddress)) {
-        throw new Exception("Transaction not sent to the correct wallet.");
+    // Normalize the admin wallet address (convert to lowercase and trim whitespace)
+    $adminWallet = strtolower(trim($adminWalletAddress));
+
+    // Normalize the transaction 'to' address (convert to lowercase and trim whitespace)
+    $transactionToAddress = strtolower(trim($transaction['to']));
+
+    // Compare the normalized addresses
+    if ($transactionToAddress !== $adminWallet) {
+        throw new Exception("Transaction not sent to the correct wallet. Expected: {$adminWallet}, Received: {$transactionToAddress}");
     }
 
      // Check if the transaction hash has already been used
