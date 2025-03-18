@@ -1,5 +1,4 @@
 <?php include 'assets/php/checkAuthDashboardWithdrawal.php'; ?>
-<?php include 'assets/php/changeURL.php'; ?>
 <!DOCTYPE html>
 <html>
     
@@ -8,122 +7,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Warren & Co - Leading Investment Company</title>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700&amp;family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&amp;display=swap"/>
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                Swal.fire({
-                    title: 'Welcome to Warren & Co!',
-                    html: `
-                        <div style="text-align: left;">
-                            <p>Warren & Co is a leading investment platform designed to help you grow your wealth effortlessly. With a focus on transparency, reliability, and user satisfaction, we offer flexible investment plans tailored to meet your financial goals.</p>
-                
-                            <h5>Rules and Standards</h5>
-                            <ul>
-                                <li><strong>Daily Tasks:</strong> Complete daily tasks to earn rewards. Only one task can be completed per day.</li>
-                                <li><strong>Withdrawal Rules:</strong> Withdrawals are allowed twice per day between <strong>7 AM and 7 PM (New York Time)</strong>. A <strong>1.5% fee</strong> is applied to all withdrawals.</li>
-                                <li><strong>Investment Validity:</strong> Each investment package is valid for <strong>30 days</strong>. After 30 days, the package expires, and you can reinvest.</li>
-                                <li><strong>Referral Bonuses:</strong> Earn referral bonuses when your referred users invest in any package. Bonuses are credited instantly upon their investment.</li>
-                                <li><strong>Transparency:</strong> All transactions are transparent and can be tracked in real-time. No hidden fees or conditions.</li>
-                            </ul>
-
-                            <h5>Investment Packages</h5>
-                            <div style="max-height: 300px; overflow-y: auto;">
-                                <table class="table table-bordered" style="width: 100%;">
-                                    <thead>
-                                        <tr>
-                                            <th>Package Name</th>
-                                            <th>Daily Withdrawal Limit</th>
-                                            <th>Price</th>
-                                            <th>Validity Days</th>
-                                            <th>Referral Bonus</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Basic Plan</td>
-                                            <td>8%</td>
-                                            <td>$18</td>
-                                            <td>30</td>
-                                            <td>$0.80</td>
-                                            <td>Active</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Premium Plan</td>
-                                            <td>8%</td>
-                                            <td>$45</td>
-                                            <td>30</td>
-                                            <td>$1.00</td>
-                                            <td>Active</td>
-                                        </tr>
-                                        <tr>
-                                            <td>VIP Plan</td>
-                                            <td>8%</td>
-                                            <td>$100</td>
-                                            <td>30</td>
-                                            <td>$1.20</td>
-                                            <td>Active</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Royalty Plan</td>
-                                            <td>8%</td>
-                                            <td>$200</td>
-                                            <td>30</td>
-                                            <td>$1.40</td>
-                                            <td>Active</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Master Plan</td>
-                                            <td>9%</td>
-                                            <td>$500</td>
-                                            <td>30</td>
-                                            <td>$1.60</td>
-                                            <td>Disabled</td>
-                                        </tr>
-                                        <tr>
-                                            <td>King Plan</td>
-                                            <td>10%</td>
-                                            <td>$1000</td>
-                                            <td>30</td>
-                                            <td>$1.80</td>
-                                            <td>Disabled</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Deluxe Plan</td>
-                                            <td>11%</td>
-                                            <td>$1500</td>
-                                            <td>30</td>
-                                            <td>$2.00</td>
-                                            <td>Disabled</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <h5>Why Choose Warren & Co?</h5>
-                            <ul>
-                                <li><strong>Flexible Investment Plans:</strong> Choose from multiple packages to suit your budget and goals.</li>
-                                <li><strong>Multiple Earning Opportunities:</strong> Earn through daily tasks, investments, and referrals.</li>
-                                <li><strong>Easy Withdrawal Options:</strong> Withdraw your earnings quickly and securely.</li>
-                                <li><strong>Transparent & Reliable:</strong> Track your earnings and withdrawals in real-time with no hidden fees.</li>
-                            </ul>
-                        </div>
-                    `,
-                    icon: 'info',
-                    confirmButtonText: 'OK',
-                    width: '800px',
-                    scrollbarPadding: false,
-                    backdrop: false, // Disable backdrop
-                    allowOutsideClick: false, // Prevent closing by clicking outside
-                    allowEscapeKey: false, // Prevent closing by pressing ESC
-                    customClass: {
-                        popup: 'dark-swal', // Apply dark theme class
-                        title: 'dark-swal-title',
-                        htmlContainer: 'dark-swal-content',
-                        confirmButton: 'dark-swal-confirm',
-                    },
-                });
-            });
-        </script>
 
          <!-- Bootstrap CSS -->
          <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -385,6 +268,114 @@
                         </div>
                     </div>
 
+                    <div class="modal modal-gradient fade" id="welcomeModal" tabindex="-1" aria-labelledby="welcomeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                            <div class="modal-content bg-black2">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="welcomeModalLabel">Welcome to Warren & Co!</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body" style="text-align: left;">
+                                    <p>Warren & Co is a leading investment platform designed to help you grow your wealth effortlessly. With a focus on transparency, reliability, and user satisfaction, we offer flexible investment plans tailored to meet your financial goals.</p>
+
+                                    <h5>Rules and Standards</h5>
+                                    <ul>
+                                        <li><strong>Daily Tasks:</strong> Complete daily tasks to earn rewards. Only one task can be completed per day.</li>
+                                        <li><strong>Withdrawal Rules:</strong> Withdrawals are allowed twice per day between <strong>7 AM and 7 PM (New York Time)</strong>. A <strong>1.5% fee</strong> is applied to all withdrawals.</li>
+                                        <li><strong>Investment Validity:</strong> Each investment package is valid for <strong>30 days</strong>. After 30 days, the package expires, and you can reinvest.</li>
+                                        <li><strong>Referral Bonuses:</strong> Earn referral bonuses when your referred users invest in any package. Bonuses are credited instantly upon their investment.</li>
+                                        <li><strong>Transparency:</strong> All transactions are transparent and can be tracked in real-time. No hidden fees or conditions.</li>
+                                    </ul>
+
+                                    <h5>Investment Packages</h5>
+                                    <div style="max-height: 300px; overflow-y: auto;" class="table-responsive">
+                                        <table class="table table-dark table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Package Name</th>
+                                                    <th>Daily Withdrawal Limit</th>
+                                                    <th>Price</th>
+                                                    <th>Validity Days</th>
+                                                    <th>Referral Bonus</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Basic Plan</td>
+                                                    <td>8%</td>
+                                                    <td>$18</td>
+                                                    <td>30</td>
+                                                    <td>$0.80</td>
+                                                    <td>Active</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Premium Plan</td>
+                                                    <td>8%</td>
+                                                    <td>$45</td>
+                                                    <td>30</td>
+                                                    <td>$1.00</td>
+                                                    <td>Active</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>VIP Plan</td>
+                                                    <td>8%</td>
+                                                    <td>$100</td>
+                                                    <td>30</td>
+                                                    <td>$1.20</td>
+                                                    <td>Active</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Royalty Plan</td>
+                                                    <td>8%</td>
+                                                    <td>$200</td>
+                                                    <td>30</td>
+                                                    <td>$1.40</td>
+                                                    <td>Active</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Master Plan</td>
+                                                    <td>9%</td>
+                                                    <td>$500</td>
+                                                    <td>30</td>
+                                                    <td>$1.60</td>
+                                                    <td>Disabled</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>King Plan</td>
+                                                    <td>10%</td>
+                                                    <td>$1000</td>
+                                                    <td>30</td>
+                                                    <td>$1.80</td>
+                                                    <td>Disabled</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Deluxe Plan</td>
+                                                    <td>11%</td>
+                                                    <td>$1500</td>
+                                                    <td>30</td>
+                                                    <td>$2.00</td>
+                                                    <td>Disabled</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <h5>Why Choose Warren & Co?</h5>
+                                    <ul>
+                                        <li><strong>Flexible Investment Plans:</strong> Choose from multiple packages to suit your budget and goals.</li>
+                                        <li><strong>Multiple Earning Opportunities:</strong> Earn through daily tasks, investments, and referrals.</li>
+                                        <li><strong>Easy Withdrawal Options:</strong> Withdraw your earnings quickly and securely.</li>
+                                        <li><strong>Transparent & Reliable:</strong> Track your earnings and withdrawals in real-time with no hidden fees.</li>
+                                    </ul>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
 
 
 
@@ -458,6 +449,12 @@
         <script src="assets/js/main.js"></script>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
+                var welcomeModal = new bootstrap.Modal(document.getElementById('welcomeModal'), {
+                    backdrop: 'static', // Prevent closing by clicking outside
+                    keyboard: false // Prevent closing by pressing ESC
+                });
+                welcomeModal.show();
+
                 const planContainer = document.getElementById("taskContainer");
 
                 // Fetch tasks from the server
