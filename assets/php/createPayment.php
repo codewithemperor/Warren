@@ -70,7 +70,7 @@ try {
         'ipn_callback_url' => 'https://warrencol.com/assets/php/ipnCallback.php',
         'success_url' => 'https://warrencol.com/dashboard.php',
         'cancel_url' => 'https://warrencol.com/deposit.php',
-        'is_fee_paid_by_user' => true,
+        // 'is_fee_paid_by_user' => true,
     ];
 
     $ch = curl_init($nowPaymentsUrl);
