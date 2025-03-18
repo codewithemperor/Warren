@@ -3,12 +3,63 @@
 
 require 'config.php'; // Ensure this path is correct
 
-// Log the incoming IPN data for debugging
-$rawData = file_get_contents('php://input');
-error_log('IPN Data: ' . $rawData);
+class NowPaymentsIPN {
+    private $ipn_secret;
 
-// Decode the JSON data
-$data = json_decode($rawData, true);
+    public function __construct($ipn_secret) {
+        $this->ipn_secret = $ipn_secret;
+    }
+
+    public function check_ipn_request_is_valid() {
+        $error_msg = "Unknown error";
+        $auth_ok = false;
+        $request_data = null;
+
+        if (isset($_SERVER['HTTP_X_NOWPAYMENTS_SIG']) && !empty($_SERVER['HTTP_X_NOWPAYMENTS_SIG'])) {
+            $received_hmac = $_SERVER['HTTP_X_NOWPAYMENTS_SIG'];
+            $request_json = file_get_contents('php://input');
+            $request_data = json_decode($request_json, true);
+
+            if ($request_json !== false && !empty($request_json)) {
+                ksort($request_data); // Sort the data by keys
+                $sorted_request_json = json_encode($request_data, JSON_UNESCAPED_SLASHES);
+
+                // Generate HMAC signature
+                $hmac = hash_hmac("sha512", $sorted_request_json, trim($this->ipn_secret));
+
+                // Compare the generated HMAC with the received HMAC
+                if (hash_equals($hmac, $received_hmac)) {
+                    $auth_ok = true;
+                } else {
+                    $error_msg = 'HMAC signature does not match';
+                }
+            } else {
+                $error_msg = 'Error reading POST data';
+            }
+        } else {
+            $error_msg = 'No HMAC signature sent.';
+        }
+
+        if (!$auth_ok) {
+            error_log('IPN HMAC Validation Failed: ' . $error_msg);
+            http_response_code(403); // Forbidden
+            echo json_encode(['error' => $error_msg]);
+            exit;
+        }
+
+        return $request_data;
+    }
+}
+
+// Initialize the IPN handler with your IPN secret
+$ipn_secret = 'GtI7gu77FbBBy0gJIsZS4RWQfsTx8OCN'; // Replace with your actual IPN secret from NowPayments
+$nowPaymentsIPN = new NowPaymentsIPN($ipn_secret);
+
+// Validate the IPN request
+$data = $nowPaymentsIPN->check_ipn_request_is_valid();
+
+// Log the incoming IPN data for debugging
+error_log('IPN Data: ' . print_r($data, true));
 
 // Validate the IPN data
 if (!isset($data['payment_id']) || !isset($data['payment_status']) || !isset($data['order_id'])) {
