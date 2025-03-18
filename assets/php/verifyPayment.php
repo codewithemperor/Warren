@@ -17,6 +17,9 @@ $data = json_decode(file_get_contents("php://input"), true);
 $transactionHash = $data['transaction_hash'];
 
 try {
+    // Start a database transaction
+    $pdo->beginTransaction();
+
     // Check if the user is logged in
     if (!isset($_SESSION['user'])) {
         throw new Exception("User not logged in.");
@@ -69,16 +72,16 @@ try {
         throw new Exception("Invalid transaction type. Expected a token transfer.");
     }
 
-     // Check if the transaction hash has already been used
-     $hashCheckQuery = "SELECT id FROM payments WHERE transaction_hash = :transaction_hash AND payment_status = 'completed'";
-     $hashCheckStmt = $pdo->prepare($hashCheckQuery);
-     $hashCheckStmt->execute(['transaction_hash' => $transactionHash]);
-     if ($hashCheckStmt->fetch()) {
-         throw new Exception("Transaction hash has already been used.");
-     }
+    // Check if the transaction hash has already been used
+    $hashCheckQuery = "SELECT id FROM payments WHERE transaction_hash = :transaction_hash";
+    $hashCheckStmt = $pdo->prepare($hashCheckQuery);
+    $hashCheckStmt->execute(['transaction_hash' => $transactionHash]);
+    if ($hashCheckStmt->fetch()) {
+        throw new Exception("Transaction hash has already been used.");
+    }
 
     // Check if the transaction hash has already been used by the current user
-    $hashCheckQuery = "SELECT id FROM payments WHERE transaction_hash = :transaction_hash AND user_id = :user_id AND payment_status = 'completed'";
+    $hashCheckQuery = "SELECT id FROM payments WHERE transaction_hash = :transaction_hash AND user_id = :user_id";
     $hashCheckStmt = $pdo->prepare($hashCheckQuery);
     $hashCheckStmt->execute([
         'transaction_hash' => $transactionHash,
@@ -88,11 +91,11 @@ try {
         throw new Exception("Transaction hash has already been used by this user.");
     }
 
-    // Verify the transaction amount using only the payment ID
-    $paymentQuery = "SELECT price FROM payments WHERE id = :id";
+    // Fetch the price from the database
+    $paymentQuery = "SELECT price, package_id FROM payments WHERE user_id = :user_id";
     $paymentStmt = $pdo->prepare($paymentQuery);
     $paymentStmt->execute([
-        'id' => $paymentId, // Make sure $paymentId is defined before using it
+        'user_id' => $userId,
     ]);
     $payment = $paymentStmt->fetch();
 
@@ -100,10 +103,35 @@ try {
         throw new Exception("Payment record not found.");
     }
 
+    // Debugging: Log the price from the database
+    error_log("Price from Database: {$payment['price']}");
+    error_log("Package ID from Database: {$payment['package_id']}");
 
-    $expectedAmount = bcmul($payment['price'], bcpow('10', '18')); // Convert to Wei
-    if ($transaction['value'] !== '0x' . dechex($expectedAmount)) {
-        throw new Exception("Transaction amount does not match the expected amount.");
+    // Convert the price from tokens to Wei (assuming 18 decimals)
+    $priceInTokens = $payment['price']; // e.g., 18.00 tokens
+    $expectedAmountInWei = bcmul($priceInTokens, bcpow('10', '18')); // Convert to Wei (18000000000000000000)
+
+    // Debugging: Log the expected amount
+    error_log("Expected Amount (Wei): {$expectedAmountInWei}");
+
+    // Extract the actual amount from the transaction input
+    if (substr($transactionInput, 0, 10) === '0xa9059cbb') {
+        // The amount is encoded in the last 32 bytes of the input (64 characters)
+        $amountHex = substr($transactionInput, 74, 64); // Extract the amount part
+        $actualAmountInWei = hexdec($amountHex); // Convert from hex to decimal
+
+        // Convert the actual amount to a string without scientific notation
+        $actualAmountInWeiStr = number_format($actualAmountInWei, 0, '', '');
+
+        // Debugging: Log the actual amount
+        error_log("Actual Amount (Wei): {$actualAmountInWeiStr}");
+
+        // Compare the amounts as strings
+        if ($actualAmountInWeiStr !== $expectedAmountInWei) {
+            throw new Exception("Transaction amount does not match the expected amount. Expected: {$expectedAmountInWei} Wei, Received: {$actualAmountInWeiStr} Wei");
+        }
+    } else {
+        throw new Exception("Invalid transaction type. Expected a token transfer.");
     }
 
     // Verify the transaction is not backdated
@@ -113,52 +141,56 @@ try {
         throw new Exception("Transaction timestamp is invalid.");
     }
 
-    // Update payment status to 'completed' for the current user
-    $updateQuery = "UPDATE payments SET payment_status = 'completed' WHERE user_id = :user_id";
+    // Update payment status to 'completed' and set the transaction hash for the current user
+    $updateQuery = "UPDATE payments SET payment_status = 'completed', transaction_hash = :transaction_hash WHERE user_id = :user_id";
     $updateStmt = $pdo->prepare($updateQuery);
     $updateStmt->execute([
         'user_id' => $userId,
+        'transaction_hash' => $transactionHash, // Add the transaction hash to the query
     ]);
 
-    // Fetch payment details for the current user
-    $paymentQuery = "SELECT package_id FROM payments WHERE user_id = :user_id";
-    $paymentStmt = $pdo->prepare($paymentQuery);
-    $paymentStmt->execute([
+    // Fetch package details
+    $packageQuery = "SELECT price, validity_days FROM packages WHERE id = :package_id";
+    $packageStmt = $pdo->prepare($packageQuery);
+    $packageStmt->execute(['package_id' => $payment['package_id']]);
+    $package = $packageStmt->fetch();
+
+    if (!$package) {
+        throw new Exception("Package not found.");
+    }
+
+    // Calculate start and end dates
+    $startDate = date('Y-m-d H:i:s');
+    $endDate = date('Y-m-d H:i:s', strtotime("+{$package['validity_days']} days"));
+
+    // Insert subscription into the database
+    $subscriptionQuery = "
+        INSERT INTO subscriptions (user_id, package_id, start_date, end_date, transaction_hash)
+        VALUES (:user_id, :package_id, :start_date, :end_date, :transaction_hash)
+    ";
+    $subscriptionStmt = $pdo->prepare($subscriptionQuery);
+    $subscriptionStmt->execute([
         'user_id' => $userId,
+        'package_id' => $payment['package_id'],
+        'start_date' => $startDate,
+        'end_date' => $endDate,
+        'transaction_hash' => $transactionHash,
     ]);
-    $payment = $paymentStmt->fetch();
 
-    if (!$payment) {
-        throw new Exception("Payment record not found for this user.");
-    }
+    // Update user's is_subscribed status
+    $userUpdateQuery = "UPDATE users SET is_subscribed = 1 WHERE id = :user_id";
+    $userUpdateStmt = $pdo->prepare($userUpdateQuery);
+    $userUpdateStmt->execute(['user_id' => $userId]);
 
-    $packageId = $payment['package_id'];
-
-    // Call addSubscription.php to update the database for the current user
-    $subscriptionResponse = file_get_contents(
-        "https://warrencol.com/assets/php/addSubscription.php",
-        false,
-        stream_context_create([
-            'http' => [
-                'method' => 'POST',
-                'header' => 'Content-Type: application/json',
-                'content' => json_encode([
-                    'user_id' => $userId,
-                    'package_id' => $packageId,
-                    'transaction_hash' => $transactionHash,
-                ]),
-            ],
-        ])
-    );
-
-    $subscriptionResult = json_decode($subscriptionResponse, true);
-
-    if (!$subscriptionResult['success']) {
-        throw new Exception($subscriptionResult['error'] ?? 'Failed to update subscription');
-    }
+    // Commit the transaction
+    $pdo->commit();
 
     echo json_encode(['message' => 'Payment verified and subscription updated successfully!']);
 } catch (Exception $e) {
+    // Roll back the transaction on error (only if a transaction is active)
+    if (isset($pdo) && $pdo->inTransaction()) {
+        $pdo->rollBack();
+    }
     http_response_code(500);
     echo json_encode(['error' => $e->getMessage()]); // Ensure the error is a string
 }

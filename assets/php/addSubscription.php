@@ -89,10 +89,10 @@ try {
     }
 
     // Verify the transaction amount using only the payment ID
-    $paymentQuery = "SELECT price, package_id FROM payments WHERE id = :id";
+    $paymentQuery = "SELECT price, package_id FROM payments WHERE user_id = :user_id";
     $paymentStmt = $pdo->prepare($paymentQuery);
     $paymentStmt->execute([
-        'id' => $paymentId, // Make sure $paymentId is defined before using it
+        'user_id' => $userId,
     ]);
     $payment = $paymentStmt->fetch();
 
