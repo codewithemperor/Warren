@@ -52,7 +52,7 @@ class NowPaymentsIPN {
 }
 
 // Initialize the IPN handler with your IPN secret
-$ipn_secret = 'GtI7gu77FbBBy0gJIsZS4RWQfsTx8OCN'; // Replace with your actual IPN secret from NowPayments
+$ipn_secret = 'xNAIko0jpWV+xPPZtlLsOVpMleuLIbNf'; // Replace with your actual IPN secret from NowPayments
 $nowPaymentsIPN = new NowPaymentsIPN($ipn_secret);
 
 // Validate the IPN request

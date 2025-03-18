@@ -61,7 +61,7 @@ try {
     $paymentId = $pdo->lastInsertId();
 
     // Create the NowPayments invoice
-    $nowPaymentsUrl = 'https://api-sandbox.nowpayments.io/v1/invoice';
+    $nowPaymentsUrl = 'https://api.nowpayments.io/v1/invoice';
     $paymentData = [
         'price_amount' => $price,
         'price_currency' => 'usd',
