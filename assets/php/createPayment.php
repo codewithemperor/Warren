@@ -64,7 +64,7 @@ try {
     $nowPaymentsUrl = 'https://api.nowpayments.io/v1/invoice';
     $paymentData = [
         'price_amount' => $price,
-        'price_currency' => 'usd',
+        'price_currency' => 'usdtbsc',
         'order_id' => $paymentId, // Use the payment ID as the order ID
         'order_description' => $planTitle,
         'ipn_callback_url' => 'https://warrencol.com/assets/php/ipnCallback.php',
