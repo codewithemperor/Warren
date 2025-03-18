@@ -27,10 +27,7 @@ if (!$isSessionValid) {
 }
 
 // If the user is not subscribed, redirect to deposit
-if (!$sessionData['is_subscribed']) {
-    header('Location: https://warrencol.com/deposit.php');
-    exit();
-}
+
 
 // If the session is valid and the user is subscribed, do nothing
 // The dashboard/withdrawal page will continue to load

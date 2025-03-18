@@ -15,26 +15,23 @@ function getTotalReferralEarnings($pdo, $userId, $todayOnly = false) {
     return $stmt->fetchColumn();
 }
 
-function getTotalTaskEarnings($pdo, $userId, $todayOnly = false) {
+function getTodayTaskEarnings($pdo, $userId) {
     $query = "
-        SELECT IFNULL(SUM(t.task_price), 0)
-        FROM user_tasks ut
-        JOIN tasks t ON ut.task_id = t.id
-        WHERE ut.user_id = :user_id
+        SELECT IFNULL(SUM(daily_amount), 0) AS today_earnings
+        FROM user_tasks
+        WHERE user_id = :user_id
+        AND DATE(completed_at) = CURDATE()
     ";
-    if ($todayOnly) {
-        $query .= " AND DATE(ut.completed_at) = CURDATE()";
-    }
     $stmt = $pdo->prepare($query);
     $stmt->execute(['user_id' => $userId]);
     return $stmt->fetchColumn();
 }
 
-function getTotalPackageEarnings($pdo, $userId) {
+function getTotalTaskEarnings($pdo, $userId) {
     $query = "
-        SELECT IFNULL(SUM(di.amount), 0) AS total_earnings
-        FROM daily_income di
-        WHERE di.user_id = :user_id
+        SELECT IFNULL(SUM(daily_amount), 0) AS total_earnings
+        FROM user_tasks
+        WHERE user_id = :user_id
     ";
     $stmt = $pdo->prepare($query);
     $stmt->execute(['user_id' => $userId]);
@@ -51,8 +48,6 @@ function getTotalWithdrawals($pdo, $userId) {
     $stmt->execute(['user_id' => $userId]);
     return $stmt->fetchColumn();
 }
-
-
 
 function getReferralCount($pdo, $userId) {
     $query = "

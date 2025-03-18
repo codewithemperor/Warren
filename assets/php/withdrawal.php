@@ -8,6 +8,11 @@ require './config.php'; // Ensure this path is correct
 require './earnings_functions.php'; // Include reusable functions
 
 try {
+    // Start session
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+
     // Get JSON input
     $input = file_get_contents('php://input');
     if (empty($input)) {
@@ -37,8 +42,7 @@ try {
         throw new Exception("Invalid USDT address", 400);
     }
 
-    // Start session and get user ID
-    session_start();
+    // Get user ID from session
     if (!isset($_SESSION['user'])) {
         throw new Exception("Unauthorized", 401);
     }
@@ -58,12 +62,11 @@ try {
         throw new Exception("Incorrect withdrawal password", 400);
     }
 
-    
+    // Set timezone to New York
     date_default_timezone_set('America/New_York');
-    // Get the current hour in New York time
-    $currentHour = (int) date('H');
 
     // Check withdrawal time (7 AM - 7 PM New York time)
+    $currentHour = (int) date('H');
     if ($currentHour < 7 || $currentHour >= 19) {
         throw new Exception("Withdrawals are only allowed between 7 AM and 7 PM (New York time).", 400);
     }
@@ -84,13 +87,12 @@ try {
     }
 
     // Calculate available balance
-    $totalPackageEarnings = getTotalPackageEarnings($pdo, $userId);
     $totalReferralEarnings = getTotalReferralEarnings($pdo, $userId);
     $totalTaskEarnings = getTotalTaskEarnings($pdo, $userId);
     $totalWithdrawals = getTotalWithdrawals($pdo, $userId);
 
     // Calculate total earnings and available balance
-    $totalEarnings = $totalReferralEarnings + $totalTaskEarnings + $totalPackageEarnings;
+    $totalEarnings = $totalReferralEarnings + $totalTaskEarnings;
     $availableBalance = $totalEarnings - $totalWithdrawals;
 
     // Validate withdrawal amount
@@ -100,31 +102,43 @@ try {
     }
 
     // Calculate withdrawal fee (1.5%)
-    $withdrawalFee = $withdrawalAmount * 0.015;
+    $withdrawalFee = round($withdrawalAmount * 0.015, 2);
 
-    // Insert withdrawal request
-    $stmt = $pdo->prepare("
-        INSERT INTO withdrawals (user_id, amount, fee, usdt_address, status)
-        VALUES (:user_id, :amount, :fee, :usdt_address, 'pending')
-    ");
-    $stmt->execute([
-        'user_id' => $userId,
-        'amount' => $withdrawalAmount,
-        'fee' => $withdrawalFee,
-        'usdt_address' => $data['usdt_address']
-    ]);
+    // Start a database transaction
+    $pdo->beginTransaction();
 
-    // Success response
-    echo json_encode([
-        'success' => true,
-        'message' => 'Withdrawal request submitted successfully',
-        'data' => [
+    try {
+        // Insert withdrawal request
+        $stmt = $pdo->prepare("
+            INSERT INTO withdrawals (user_id, amount, fee, usdt_address, status)
+            VALUES (:user_id, :amount, :fee, :usdt_address, 'pending')
+        ");
+        $stmt->execute([
+            'user_id' => $userId,
             'amount' => $withdrawalAmount,
             'fee' => $withdrawalFee,
-            'net_amount' => $withdrawalAmount - $withdrawalFee,
             'usdt_address' => $data['usdt_address']
-        ]
-    ]);
+        ]);
+
+        // Commit the transaction
+        $pdo->commit();
+
+        // Success response
+        echo json_encode([
+            'success' => true,
+            'message' => 'Withdrawal request submitted successfully',
+            'data' => [
+                'amount' => $withdrawalAmount,
+                'fee' => $withdrawalFee,
+                'net_amount' => $withdrawalAmount - $withdrawalFee,
+                'usdt_address' => $data['usdt_address']
+            ]
+        ]);
+    } catch (Exception $e) {
+        // Rollback the transaction on error
+        $pdo->rollBack();
+        throw new Exception("Failed to process withdrawal: " . $e->getMessage(), 500);
+    }
 
 } catch (Exception $e) {
     // Error response

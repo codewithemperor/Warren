@@ -40,6 +40,24 @@ try {
     // Enable PDO error reporting
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+    // Check if the user has an active subscription
+    $query = "
+        SELECT s.*, p.daily_withdrawal_limit, p.price 
+        FROM subscriptions s
+        JOIN packages p ON s.package_id = p.id
+        WHERE s.user_id = :user_id 
+        AND s.end_date > NOW()
+    ";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute(['user_id' => $userId]);
+    $activePackage = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$activePackage) {
+        http_response_code(400);
+        echo json_encode(['error' => 'No active subscription found']);
+        exit;
+    }
+
     // Check if the user has already completed a task today
     $query = "
         SELECT COUNT(*) 
@@ -57,19 +75,23 @@ try {
         exit;
     }
 
+    // Calculate the daily withdrawal amount
+    $dailyWithdrawalAmount = ($activePackage['price'] * $activePackage['daily_withdrawal_limit']) / 100;
+
     // Insert the task into the user_tasks table
     $query = "
-        INSERT INTO user_tasks (user_id, task_id, task_type, status, completed_at)
-        VALUES (:user_id, :task_id, 'daily', 'completed', NOW())
+        INSERT INTO user_tasks (user_id, task_id, task_type, status, completed_at, daily_amount)
+        VALUES (:user_id, :task_id, 'daily', 'completed', NOW(), :daily_amount)
     ";
     $stmt = $pdo->prepare($query);
     $stmt->execute([
         'user_id' => $userId,
-        'task_id' => $taskId
+        'task_id' => $taskId,
+        'daily_amount' => $dailyWithdrawalAmount
     ]);
 
     // Return success response
-    echo json_encode(['success' => true]);
+    echo json_encode(['success' => true, 'daily_amount' => $dailyWithdrawalAmount]);
 
 } catch (PDOException $e) {
     // Handle database errors

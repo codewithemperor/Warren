@@ -26,35 +26,27 @@ try {
     // 1. Referral commissions from today's subscriptions
     $todayReferralEarnings = getTotalReferralEarnings($pdo, $userId, true); // true for today's earnings
 
-    // 2. Today's task earnings
-    $todayTaskEarnings = getTotalTaskEarnings($pdo, $userId, true); // true for today's earnings
+    // 2. Fetch today's task earnings from user_tasks
+    $dailyPackageEarnings = getTodayTaskEarnings($pdo, $userId);
 
     // 3. Fetch the active package's daily withdrawal limit and price
     $activePackage = getActivePackage($pdo, $userId);
 
-    // Calculate package earnings
-    $dailyPackageEarnings = 0;
-    $totalPackageEarnings = 10;
-
-    if ($activePackage) {
-        // Daily earnings
-        $dailyPackageEarnings = ($activePackage['price'] * $activePackage['daily_withdrawal_limit']) / 100;
-
-        // Total package earnings
-        $totalPackageEarnings = getTotalPackageEarnings($pdo, $userId);
-    }
+    // Calculate total task earnings
+    $totalTaskEarnings = getTotalTaskEarnings($pdo, $userId);
 
     // Calculate today's total earnings
-    $todayEarnings = $todayReferralEarnings + $todayTaskEarnings + $dailyPackageEarnings;
+    $todayEarnings = $todayReferralEarnings + $dailyPackageEarnings;
 
     // TOTAL EARNINGS CALCULATION
     $totalReferralEarnings = getTotalReferralEarnings($pdo, $userId);
-    $totalTaskEarnings = getTotalTaskEarnings($pdo, $userId);
     $totalWithdrawals = getTotalWithdrawals($pdo, $userId);
 
-    // Calculate total earnings and available balance
-    $totalEarnings = $totalReferralEarnings + $totalTaskEarnings + $totalPackageEarnings;
-    $availableBalance = $totalEarnings - $totalWithdrawals;
+    // Calculate total amount earned (referral + task earnings)
+    $totalAmountEarned = $totalReferralEarnings + $totalTaskEarnings;
+
+    // Calculate available balance
+    $availableBalance = $totalAmountEarned - $totalWithdrawals;
 
     // Fetch the number of referrals
     $referralCount = getReferralCount($pdo, $userId);
@@ -112,14 +104,14 @@ try {
             </div>
         </div>
 
-         <!-- Total Referral Earnings -->
-         <div class="col">
+        <!-- Total Referral Earnings -->
+        <div class="col">
             <div class="feature-card two">
                 <div class="feature-card-icon">
                     <img src="assets/img/update/icon/feature-icon1-2.svg" alt="Icon"/>
                 </div>
                 <div class="feature-card-details">
-                    <h4 class="feature-card-title">Referral Earnings </h4>
+                    <h4 class="feature-card-title">Referral Earnings</h4>
                     <p class="feature-card-text">$<?php echo number_format($totalReferralEarnings, 2); ?></p>
                 </div>
             </div>
@@ -132,21 +124,21 @@ try {
                     <img src="assets/img/update/icon/feature-icon1-2.svg" alt="Icon"/>
                 </div>
                 <div class="feature-card-details">
-                    <h4 class="feature-card-title">Total Task Earnings </h4>
+                    <h4 class="feature-card-title">Total Task Earnings</h4>
                     <p class="feature-card-text">$<?php echo number_format($totalTaskEarnings, 2); ?></p>
                 </div>
             </div>
         </div>
 
-        <!-- Total Earnings -->
+        <!-- Total Amount Earned -->
         <div class="col">
             <div class="feature-card two">
                 <div class="feature-card-icon">
                     <img src="assets/img/update/icon/feature-icon1-2.svg" alt="Icon"/>
                 </div>
                 <div class="feature-card-details">
-                    <h4 class="feature-card-title">Total Plan Commission</h4>
-                    <p class="feature-card-text">$<?php echo number_format($totalPackageEarnings, 2); ?></p>
+                    <h4 class="feature-card-title">Total Amount Earned</h4>
+                    <p class="feature-card-text">$<?php echo number_format($totalAmountEarned, 2); ?></p>
                 </div>
             </div>
         </div>
@@ -176,8 +168,6 @@ try {
                 </div>
             </div>
         </div>
-
-        
     </div>
 
     <!-- Referral URL Section -->
