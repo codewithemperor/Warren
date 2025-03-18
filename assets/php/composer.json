@@ -1,0 +1,13 @@
+{
+    "name": "warren/withdrawal-system",
+    "description": "A PHP script to handle USDT withdrawals using Web3 on Binance Smart Chain.",
+    "autoload": {
+        "psr-4": {
+            "Warren\\WithdrawalSystem\\": "src/"
+        }
+    },
+    "require": {
+        "web3p/web3.php": "^0.3.2",
+        "vlucas/phpdotenv": "^5.6"
+    }
+}

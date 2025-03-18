@@ -160,8 +160,21 @@
 						</div>
 					</section>
 
+					
 					<div class="pt-130 bg-black2 pb-20">
 						<div class="container">
+							<div class="footer-widget widget-newsletter mb-5 mx-auto w-100" id="verifyContainer" style="min-width: 100%;">
+								<h2 class="title style2 text-center">Confirm Payment</h2>
+								<form class="verify-form newsletter-form">
+									<div class="form-group" style="min-width: 100%;">
+										<input id="inputHash" class="form-control" type="text" placeholder="Paste your HASH" />
+									</div>
+									<button type="submit" id="verifyPayment" disabled class="eg-btn btn5">Verify Payment</button>
+								</form>
+							</div>
+
+							
+
 							<div class="section-title text-center mb-50">
 								<h2 class="title style2">Our Packages</h2>
 							</div>
@@ -323,7 +336,78 @@
 		
 
 		<script src="assets/js/main.js"></script>
-		<script src="assets/js/deposit.js"></script>
+		<script src="assets/js/newDeposit.js"></script>
+
+		<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			const confirmPaymentForm = document.querySelector(".verify-form");
+			const verifyButton = confirmPaymentForm.querySelector("#verifyPayment");
+			const hashInput = confirmPaymentForm.querySelector("#inputHash");
+
+			// Enable button when input is filled
+			hashInput.addEventListener("input", function () {
+				verifyButton.disabled = hashInput.value.trim() === "";
+			});
+
+			confirmPaymentForm.addEventListener("submit", async (e) => {
+				e.preventDefault();
+
+				// Disable button and show loading state
+				verifyButton.disabled = true;
+				verifyButton.textContent = "Verifying...";
+
+				const transactionHash = hashInput.value.trim();
+
+				if (!transactionHash) {
+					Swal.fire({
+						icon: 'error',
+						title: 'Error',
+						text: 'Please enter a valid transaction hash.',
+					});
+					verifyButton.disabled = false;
+					verifyButton.textContent = "Verify Payment";
+					return;
+				}
+
+				try {
+					// Send transaction hash to the backend for verification
+					const response = await fetch("https://warrencol.com/assets/php/verifyPayment.php", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({
+							transaction_hash: transactionHash,
+						}),
+					});
+
+					const result = await response.json();
+
+					if (response.ok) {
+						Swal.fire({
+							icon: 'success',
+							title: 'Payment Verified!',
+							text: result.message,
+						});
+						hashInput.value = ""; // Clear input after success
+					} else {
+						throw new Error(result.error || "Payment verification failed");
+					}
+				} catch (error) {
+					Swal.fire({
+						icon: 'error',
+						title: 'Error',
+						text: error.message,
+					});
+				} finally {
+					// Re-enable button and reset state
+					verifyButton.disabled = false;
+					verifyButton.textContent = "Verify Payment";
+				}
+			});
+		});
+		</script>
+	
 	</body>
 </html>
 c
