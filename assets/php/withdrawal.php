@@ -102,7 +102,7 @@ try {
     }
 
     // Calculate withdrawal fee (1.5%)
-    $withdrawalFee = round($withdrawalAmount * 0.015, 2);
+    $withdrawalFee = round($withdrawalAmount * 0, 8);
 
     // Start a database transaction
     $pdo->beginTransaction();

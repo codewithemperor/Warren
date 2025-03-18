@@ -8,11 +8,11 @@ document.addEventListener("DOMContentLoaded", () => {
     amountInput.addEventListener("input", () => {
         const amount = parseFloat(amountInput.value);
         if (!isNaN(amount) && amount > 0) {
-            const fee = amount * 0.015; // 1.5% fee
-            feeInput.value = fee.toFixed(2); // Display fee with 2 decimal places
+            const fee = amount * 0; // 1.5% fee
+            feeInput.value = fee.toFixed(8); // Display fee with 2 decimal places
 
             // Update button text
-            const totalAmount = (amount + fee).toFixed(2);
+            const totalAmount = (amount + fee).toFixed(8);
             buttonText.textContent = `Withdraw $${totalAmount}`;
         } else {
             feeInput.value = ""; // Clear fee if amount is invalid
