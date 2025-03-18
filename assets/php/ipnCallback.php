@@ -68,6 +68,10 @@ try {
 
     // Return success response
     echo json_encode(['success' => true]);
+
+    // Redirect to dashboard.php after all tasks are completed
+    header('Location: https://warrencol.com/dashboard.php');
+    exit;
 } catch (Exception $e) {
     // Log the error
     error_log('IPN Callback Error: ' . $e->getMessage());
