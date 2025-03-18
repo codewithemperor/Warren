@@ -88,18 +88,18 @@ try {
         throw new Exception("Transaction hash has already been used by this user.");
     }
 
-    // Verify the transaction amount
-    $paymentQuery = "SELECT price FROM payments WHERE transaction_hash = :transaction_hash AND user_id = :user_id";
+    // Verify the transaction amount using only the payment ID
+    $paymentQuery = "SELECT price FROM payments WHERE id = :id";
     $paymentStmt = $pdo->prepare($paymentQuery);
     $paymentStmt->execute([
-        'transaction_hash' => $transactionHash,
-        'user_id' => $userId,
+        'id' => $paymentId, // Make sure $paymentId is defined before using it
     ]);
     $payment = $paymentStmt->fetch();
 
     if (!$payment) {
-        throw new Exception("Payment record not found for this user.");
+        throw new Exception("Payment record not found.");
     }
+
 
     $expectedAmount = bcmul($payment['price'], bcpow('10', '18')); // Convert to Wei
     if ($transaction['value'] !== '0x' . dechex($expectedAmount)) {
