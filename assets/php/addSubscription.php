@@ -1,38 +1,132 @@
 <?php
-// addSubscription.php
+// verifyPayment.php
 
-require 'config.php'; // Ensure this path is correct
-
-// Get the request body
-$data = json_decode(file_get_contents('php://input'), true);
-
-if (!isset($data['user_id']) || !isset($data['package_id']) || !isset($data['transaction_hash'])) {
-    http_response_code(400);
-    echo json_encode(['error' => 'User ID, Package ID, and Transaction Hash are required']);
-    exit;
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
 }
+require 'vendor/autoload.php'; // Ensure Web3.php is installed via Composer
+require 'config.php'; // Database configuration
+use Dotenv\Dotenv;
 
-$userId = $data['user_id'];
-$packageId = $data['package_id'];
+// Load environment variables from .env file
+$dotenv = Dotenv::createImmutable(dirname(__DIR__, 1));
+$dotenv->load();
+
+// Read input data
+$data = json_decode(file_get_contents("php://input"), true);
 $transactionHash = $data['transaction_hash'];
 
 try {
-    // Enable PDO error reporting
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    // Check if the user is logged in
+    if (!isset($_SESSION['user'])) {
+        throw new Exception("User not logged in.");
+    }
 
-    // Start a database transaction
-    $pdo->beginTransaction();
+    $userId = $_SESSION['user']['id']; // Get the user ID from the session
+
+    // Fetch admin wallet address
+    $walletResponse = file_get_contents("https://warrencol.com/assets/php/getAdminWallet.php");
+    $walletData = json_decode($walletResponse, true);
+
+    if (!$walletData || isset($walletData['error'])) {
+        throw new Exception($walletData['error']['message'] ?? 'Failed to fetch admin wallet address'); // Ensure the error is a string
+    }
+
+    $adminWalletAddress = $walletData['wallet_address'];
+
+    // Fetch transaction details using BscScan API
+    $bscscanApiKey = $_ENV['BSCSCAN_API_KEY']; // Add your BscScan API key to .env
+    $bscscanUrl = "https://api.bscscan.com/api?module=proxy&action=eth_getTransactionByHash&txhash={$transactionHash}&apikey={$bscscanApiKey}";
+    $transactionResponse = file_get_contents($bscscanUrl);
+    $transactionData = json_decode($transactionResponse, true);
+
+    if (!$transactionData || isset($transactionData['error'])) {
+        $errorMessage = $transactionData['error']['message'] ?? 'Failed to fetch transaction details';
+        throw new Exception($errorMessage); // Ensure the error is a string
+    }
+
+    $transaction = $transactionData['result'];
+
+    if (!$transaction) {
+        throw new Exception("Transaction not found.");
+    }
+
+    // Check if the transaction is sent to the correct wallet
+    // Normalize the admin wallet address (convert to lowercase and trim whitespace)
+    $adminWallet = strtolower(trim($adminWalletAddress));
+
+    $transactionInput = $transaction['input']; // Raw input data from the transaction
+    if (substr($transactionInput, 0, 10) === '0xa9059cbb') { // Check if it's a token transfer
+        // Extract the recipient address from the input data
+        $recipientAddress = '0x' . substr($transactionInput, 34, 40); // Recipient address is at offset 34-74
+        $recipientAddress = strtolower(trim($recipientAddress)); // Normalize the address
+
+        // Compare the recipient address with the admin wallet address
+        if ($recipientAddress !== $adminWallet) {
+            throw new Exception("Transaction not sent to the correct wallet. Expected: {$adminWallet}, Received: {$recipientAddress}");
+        }
+    } else {
+        throw new Exception("Invalid transaction type. Expected a token transfer.");
+    }
+
+    // Check if the transaction hash has already been used
+    $hashCheckQuery = "SELECT id FROM payments WHERE transaction_hash = :transaction_hash AND payment_status = 'completed'";
+    $hashCheckStmt = $pdo->prepare($hashCheckQuery);
+    $hashCheckStmt->execute(['transaction_hash' => $transactionHash]);
+    if ($hashCheckStmt->fetch()) {
+        throw new Exception("Transaction hash has already been used.");
+    }
+
+    // Check if the transaction hash has already been used by the current user
+    $hashCheckQuery = "SELECT id FROM payments WHERE transaction_hash = :transaction_hash AND user_id = :user_id AND payment_status = 'completed'";
+    $hashCheckStmt = $pdo->prepare($hashCheckQuery);
+    $hashCheckStmt->execute([
+        'transaction_hash' => $transactionHash,
+        'user_id' => $userId,
+    ]);
+    if ($hashCheckStmt->fetch()) {
+        throw new Exception("Transaction hash has already been used by this user.");
+    }
+
+    // Verify the transaction amount using only the payment ID
+    $paymentQuery = "SELECT price, package_id FROM payments WHERE id = :id";
+    $paymentStmt = $pdo->prepare($paymentQuery);
+    $paymentStmt->execute([
+        'id' => $paymentId, // Make sure $paymentId is defined before using it
+    ]);
+    $payment = $paymentStmt->fetch();
+
+    if (!$payment) {
+        throw new Exception("Payment record not found.");
+    }
+
+    $expectedAmount = bcmul($payment['price'], bcpow('10', '18')); // Convert to Wei
+    if ($transaction['value'] !== '0x' . dechex($expectedAmount)) {
+        throw new Exception("Transaction amount does not match the expected amount.");
+    }
+
+    // Verify the transaction is not backdated
+    $currentTimestamp = time();
+    $transactionTimestamp = hexdec($transaction['blockNumber']); // Get block timestamp
+    if ($transactionTimestamp > $currentTimestamp) {
+        throw new Exception("Transaction timestamp is invalid.");
+    }
+
+    // Update payment status to 'completed' for the current user
+    $updateQuery = "UPDATE payments SET payment_status = 'completed' WHERE user_id = :user_id";
+    $updateStmt = $pdo->prepare($updateQuery);
+    $updateStmt->execute([
+        'user_id' => $userId,
+    ]);
 
     // Fetch package details
-    $query = "SELECT price, validity_days FROM packages WHERE id = :package_id";
-    $stmt = $pdo->prepare($query);
-    $stmt->execute(['package_id' => $packageId]);
-    $package = $stmt->fetch();
+    $packageQuery = "SELECT price, validity_days FROM packages WHERE id = :package_id";
+    $packageStmt = $pdo->prepare($packageQuery);
+    $packageStmt->execute(['package_id' => $payment['package_id']]);
+    $package = $packageStmt->fetch();
 
     if (!$package) {
-        http_response_code(404);
-        echo json_encode(['error' => 'Package not found']);
-        exit;
+        throw new Exception("Package not found.");
     }
 
     // Calculate start and end dates
@@ -40,40 +134,33 @@ try {
     $endDate = date('Y-m-d H:i:s', strtotime("+{$package['validity_days']} days"));
 
     // Insert subscription into the database
-    $query = "
+    $subscriptionQuery = "
         INSERT INTO subscriptions (user_id, package_id, start_date, end_date, transaction_hash)
         VALUES (:user_id, :package_id, :start_date, :end_date, :transaction_hash)
     ";
-    $stmt = $pdo->prepare($query);
-    $stmt->execute([
+    $subscriptionStmt = $pdo->prepare($subscriptionQuery);
+    $subscriptionStmt->execute([
         'user_id' => $userId,
-        'package_id' => $packageId,
+        'package_id' => $payment['package_id'],
         'start_date' => $startDate,
         'end_date' => $endDate,
         'transaction_hash' => $transactionHash,
     ]);
 
     // Update user's is_subscribed status
-    $query = "UPDATE users SET is_subscribed = 1 WHERE id = :user_id";
-    $stmt = $pdo->prepare($query);
-    $stmt->execute(['user_id' => $userId]);
+    $userUpdateQuery = "UPDATE users SET is_subscribed = 1 WHERE id = :user_id";
+    $userUpdateStmt = $pdo->prepare($userUpdateQuery);
+    $userUpdateStmt->execute(['user_id' => $userId]);
 
     // Commit the transaction
     $pdo->commit();
 
-    // Return success response
-    echo json_encode(['success' => true]);
-
-} catch (PDOException $e) {
+    echo json_encode(['message' => 'Payment verified and subscription updated successfully!']);
+} catch (Exception $e) {
     // Roll back the transaction on error
     if (isset($pdo) && $pdo->inTransaction()) {
         $pdo->rollBack();
     }
     http_response_code(500);
-    echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
-    error_log('Database error: ' . $e->getMessage()); // Log the error
-} catch (Exception $e) {
-    http_response_code(500);
-    echo json_encode(['error' => 'An error occurred: ' . $e->getMessage()]);
-    error_log('Error: ' . $e->getMessage()); // Log the error
+    echo json_encode(['error' => $e->getMessage()]); // Ensure the error is a string
 }
