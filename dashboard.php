@@ -1,4 +1,5 @@
 <?php include 'assets/php/checkAuthDashboardWithdrawal.php'; ?>
+<?php include 'assets/php/changeURL.php'; ?>
 <!DOCTYPE html>
 <html>
     
@@ -188,7 +189,7 @@
                                                             <!---->
                                                         </li>
                                                         <li class="">
-                                                            <a aria-current="page" href="index.php#feature" class="router-link-active router-link-exact-active"><span></span>Features</a>
+                                                            <a aria-current="page" href="deposit.php" class="router-link-active router-link-exact-active"><span></span>Deposit</a>
                                                             <!---->
                                                         </li>
                                                         <li class="">
@@ -226,7 +227,7 @@
                                         <li class=""><a aria-current="page" href="dashboard.php" class="router-link-active router-link-exact-active">Dashboard</a></li>
                                         <li class=""><a aria-current="page" href="index.php#blockchain" class="router-link-active router-link-exact-active">Why Warren & Co</a></li>
                                         <li class=""><a aria-current="page" href="withdrawal.php" class="router-link-active router-link-exact-active">Withdrawal</a></li>
-                                        <li class=""><a aria-current="page" href="index.php#feature" class="router-link-active router-link-exact-active">Feature</a></li>
+                                        <li class=""><a aria-current="page" href="deposit.php" class="router-link-active router-link-exact-active">Deposit</a></li>
                                         
                                         <li class=""><a href="https://t.me/WarrenC_leading_investment" class="">Contact</a></li>
                                         <li class="header-login"><a href="assets/php/logout.php" class="btn2">LOGOUT</a></li>
