@@ -65,10 +65,10 @@ document.addEventListener("DOMContentLoaded", function () {
                                 "Content-Type": "application/json",
                             },
                             body: JSON.stringify({
-                                user_id: 1, // Replace with actual user ID (e.g., from session)
+                                // user_id: 1, // Replace with actual user ID (e.g., from session)
                                 package_id: selectedPlanId,
                                 price: planPrice,
-                                currency: "USDT BSC", // Add currency type
+                                // currency: "USDT BSC", // Add currency type
                             }),
                         });
 

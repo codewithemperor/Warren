@@ -8,7 +8,7 @@ require 'config.php'; // Ensure this path is correct
 $data = json_decode(file_get_contents("php://input"), true);
 
 // Extract data
-$user_id = $data['user_id'];
+$userId = $_SESSION['user']['id']; // Get the user ID from the session
 $package_id = $data['package_id'];
 $price = $data['price'];
 
