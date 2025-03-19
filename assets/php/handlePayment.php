@@ -1,5 +1,8 @@
 <?php
 // handlePayment.php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Include the database configuration file
 require 'config.php'; // Ensure this path is correct
@@ -8,7 +11,7 @@ require 'config.php'; // Ensure this path is correct
 $data = json_decode(file_get_contents("php://input"), true);
 
 // Extract data
-$userId = $_SESSION['user']['id']; // Get the user ID from the session
+$user_id = $_SESSION['user']['id']; 
 $package_id = $data['package_id'];
 $price = $data['price'];
 
