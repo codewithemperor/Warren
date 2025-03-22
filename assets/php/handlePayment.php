@@ -24,7 +24,7 @@ try {
 
     if ($existingPayment) {
         // Update the existing payment record
-        $updateQuery = "UPDATE payments SET package_id = :package_id, price = :price, payment_status = 'pending', updated_at = NOW() WHERE id = :id";
+        $updateQuery = "UPDATE payments SET package_id = :package_id, price = :price, payment_status = 'pending'  WHERE id = :id";
         $updateStmt = $pdo->prepare($updateQuery);
         $updateStmt->execute([
             'package_id' => $package_id,

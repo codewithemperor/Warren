@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const planContainer = document.getElementById("planContainer");
 
     // Fetch packages from the server
-    fetch('https://warrencol.com/assets/php/getPackages.php')
+    fetch('assets/php/getPackages.php')
         .then(response => response.json())
         .then(plans => {
             plans.forEach((plan) => {
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     try {
                         // Create payment request using NowPayments
-                        const response = await fetch("https://warrencol.com/assets/php/createPayment.php", {
+                        const response = await fetch("assets/php/createPayment.php", {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json",

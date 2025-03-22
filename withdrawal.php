@@ -1,6 +1,6 @@
 <?php include 'assets/php/checkAuthDashboardWithdrawal.php'; ?>
 <!DOCTYPE html>
-<html data-capo="">
+<html >
     
     <head>
         <meta charset="utf-8" />

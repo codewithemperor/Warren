@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
             // Send withdrawal request to the backend
-            const response = await fetch("https://warrencol.com/assets/php/newWithdrawal.php", {
+            const response = await fetch("assets/php/newWithdrawal.php", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

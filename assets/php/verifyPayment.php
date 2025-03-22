@@ -28,14 +28,14 @@ try {
     $userId = $_SESSION['user']['id']; // Get the user ID from the session
 
     // Fetch admin wallet address
-    $walletResponse = file_get_contents("https://warrencol.com/assets/php/getAdminWallet.php");
-    $walletData = json_decode($walletResponse, true);
+    // $walletResponse = file_get_contents("../php/getAdminWallet.php");
+    // $walletData = json_decode($walletResponse, true);
 
-    if (!$walletData || isset($walletData['error'])) {
-        throw new Exception($walletData['error']['message'] ?? 'Failed to fetch admin wallet address'); // Ensure the error is a string
-    }
+    // if (!$walletData || isset($walletData['error'])) {
+    //     throw new Exception($walletData['error']['message'] ?? 'Failed to fetch admin wallet address'); // Ensure the error is a string
+    // }
 
-    $adminWalletAddress = $walletData['wallet_address'];
+    $adminWalletAddress = $_ENV['WALLET_ADDRESS'];
 
     // Fetch transaction details using BscScan API
     $bscscanApiKey = $_ENV['BSCSCAN_API_KEY']; // Add your BscScan API key to .env

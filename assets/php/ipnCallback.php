@@ -95,7 +95,7 @@ try {
 
         // Call addSubscription.php to update the database
         $subscriptionResponse = file_get_contents(
-            "https://warrencol.com/assets/php/addSubscription.php",
+            "assets/php/addSubscription.php",
             false,
             stream_context_create([
                 'http' => [
@@ -121,7 +121,7 @@ try {
     echo json_encode(['success' => true]);
 
     // Redirect to dashboard.php after all tasks are completed
-    header('Location: https://warrencol.com/dashboard.php');
+    header('Location: dashboard.php');
     exit;
 } catch (Exception $e) {
     // Log the error

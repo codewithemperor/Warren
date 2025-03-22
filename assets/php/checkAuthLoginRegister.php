@@ -18,10 +18,10 @@ if (isset($_SESSION['user']) && is_array($_SESSION['user'])) {
     // If the session is valid, redirect based on is_subscribed status
     if ($isSessionValid) {
         if ($sessionData['is_subscribed']) {
-            header('Location: https://warrencol.com/dashboard.php');
+            header('Location: dashboard.php');
             exit();
         } else {
-            header('Location: https://warrencol.com/deposit.php');
+            header('Location: deposit.php');
             exit();
         }
     }

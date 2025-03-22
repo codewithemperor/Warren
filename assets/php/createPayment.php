@@ -67,9 +67,9 @@ try {
         'price_currency' => 'usdtbsc',
         'order_id' => $paymentId, // Use the payment ID as the order ID
         'order_description' => $planTitle,
-        'ipn_callback_url' => 'https://warrencol.com/assets/php/ipnCallback.php',
-        'success_url' => 'https://warrencol.com/dashboard.php',
-        'cancel_url' => 'https://warrencol.com/deposit.php',
+        'ipn_callback_url' => 'assets/php/ipnCallback.php',
+        'success_url' => 'dashboard.php',
+        'cancel_url' => 'deposit.php',
         // 'is_fee_paid_by_user' => true,
     ];
 

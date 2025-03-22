@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const planContainer = document.getElementById("planContainer");
 
     // Fetch packages from the server
-    fetch('https://warrencol.com/assets/php/getPackages.php')
+    fetch('assets/php/getPackages.php')
         .then(response => response.json())
         .then(plans => {
             plans.forEach((plan) => {
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     try {
                         // Fetch admin wallet address
-                        const walletResponse = await fetch("https://warrencol.com/assets/php/getAdminWallet.php");
+                        const walletResponse = await fetch("assets/php/getAdminWallet.php");
                         const walletData = await walletResponse.json();
 
                         if (!walletResponse.ok) {
@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         const adminWalletAddress = walletData.wallet_address;
 
                         // Save payment details to the database without requiring a transaction hash
-                        const paymentResponse = await fetch("https://warrencol.com/assets/php/handlePayment.php", {
+                        const paymentResponse = await fetch("assets/php/handlePayment.php", {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json",

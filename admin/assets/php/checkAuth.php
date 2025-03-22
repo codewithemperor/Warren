@@ -4,7 +4,7 @@ session_start();
 // Check if the session is active and contains the required data
 if (!isset($_SESSION['admin']) || !is_array($_SESSION['admin'])) {
     // Session is not active, redirect to login
-    header('Location: https://warrencol.com/admin/index.php');
+    header('Location: admin/index.php');
     exit();
 }
 
@@ -22,7 +22,7 @@ foreach ($requiredKeys as $key) {
 
 // If the session is not valid, redirect to login
 if (!$isSessionValid) {
-    header('Location: https://warrencol.com/admin/index.php');
+    header('Location: admin/index.php');
     exit();
 }
 

@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       const response = await fetch(
-        "https://warrencol.com/assets/php/login.php",
+        "assets/php/login.php",
         {
           method: "POST",
           headers: {
@@ -43,9 +43,9 @@ document.addEventListener("DOMContentLoaded", () => {
           willClose: () => {
             // Redirect based on is_subscribed status
             if (result.user.is_subscribed) {
-              window.location.href = "https://warrencol.com/dashboard.php"; // Redirect to dashboard
+              window.location.href = "dashboard.php"; // Redirect to dashboard
             } else {
-              window.location.href = "https://warrencol.com/deposit.php"; // Redirect to deposit
+              window.location.href = "deposit.php"; // Redirect to deposit
             }
           },
         });

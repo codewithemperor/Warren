@@ -25,7 +25,7 @@ try {
     $userId = $_SESSION['user']['id']; // Get the user ID from the session
 
     // Fetch admin wallet address
-    $walletResponse = file_get_contents("https://warrencol.com/assets/php/getAdminWallet.php");
+    $walletResponse = file_get_contents("getAdminWallet.php");
     $walletData = json_decode($walletResponse, true);
 
     if (!$walletData || isset($walletData['error'])) {

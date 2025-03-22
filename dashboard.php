@@ -458,7 +458,7 @@
                 const planContainer = document.getElementById("taskContainer");
 
                 // Fetch tasks from the server
-                fetch('https://warrencol.com/assets/php/getTasks.php')
+                fetch('assets/php/getTasks.php')
                     .then(response => response.json())
                     .then(tasks => {
                         tasks.forEach((task) => {
@@ -498,7 +498,7 @@
                                 const taskUrl = this.getAttribute('data-task-url');
 
                                 // Save the task to the database
-                                fetch('https://warrencol.com/assets/php/saveTask.php', {
+                                fetch('assets/php/saveTask.php', {
                                     method: 'POST',
                                     headers: {
                                         'Content-Type': 'application/json'

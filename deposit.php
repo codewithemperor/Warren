@@ -1,6 +1,6 @@
 <?php include 'assets/php/checkAuthDeposit.php'; ?>
 <!DOCTYPE html>
-<html data-capo="">
+<html >
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -371,7 +371,7 @@
 
 				try {
 					// Send transaction hash to the backend for verification
-					const response = await fetch("https://warrencol.com/assets/php/verifyPayment.php", {
+					const response = await fetch("assets/php/verifyPayment.php", {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",
@@ -388,7 +388,12 @@
 							icon: 'success',
 							title: 'Payment Verified!',
 							text: result.message,
+							timer: 3000, // Auto-close after 3 seconds
+							showConfirmButton: false // Hide the "OK" button
+						}).then(() => {
+							window.location.href = 'dashboard.php'; // Navigate after alert closes
 						});
+
 						hashInput.value = ""; // Clear input after success
 					} else {
 						throw new Error(result.error || "Payment verification failed");
